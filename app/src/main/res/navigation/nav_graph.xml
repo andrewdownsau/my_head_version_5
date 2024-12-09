@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/ContextList"
-        android:name="andrew.organiser.myhead_v2.ContextList"
+        android:name="andrew.organiser.myhead_v3.FragmentContextList"
         android:label="@string/context_list_label"
         tools:layout="@layout/context_list">
         <action
@@ -17,18 +17,18 @@
             android:id="@+id/action_ContextList_to_TaskList"
             app:destination="@id/TaskList" />
         <action
-            android:id="@+id/action_ContextList_to_UrgentList"
-            app:destination="@id/UrgentList" />
+            android:id="@+id/action_ContextList_to_MasterList"
+            app:destination="@id/MasterList" />
     </fragment>
     <fragment
         android:id="@+id/ContextAddEdit"
-        android:name="andrew.organiser.myhead_v2.ContextAddEdit"
+        android:name="andrew.organiser.myhead_v3.FragmentContextAddEdit"
         android:label="@string/context_add_edit_label"
         tools:layout="@layout/context_add_edit">
     </fragment>
     <fragment
         android:id="@+id/TaskList"
-        android:name="andrew.organiser.myhead_v2.TaskList"
+        android:name="andrew.organiser.myhead_v3.FragmentTaskList"
         android:label=""
         tools:layout="@layout/task_list">
         <action
@@ -40,30 +40,51 @@
     </fragment>
     <fragment
         android:id="@+id/TaskAddEdit"
-        android:name="andrew.organiser.myhead_v2.TaskAddEdit"
+        android:name="andrew.organiser.myhead_v3.FragmentTaskAddEdit"
         android:label="@string/task_add_edit_label"
         tools:layout="@layout/task_add_edit">
     </fragment>
     <fragment
         android:id="@+id/TaskArchive"
-        android:name="andrew.organiser.myhead_v2.TaskArchive"
+        android:name="andrew.organiser.myhead_v3.FragmentTaskArchive"
         android:label="@string/archive_list_label"
         tools:layout="@layout/task_archive">
+        <action
+            android:id="@+id/action_TaskArchive_to_TaskAddEdit"
+            app:destination="@id/TaskAddEdit" />
     </fragment>
     <fragment
-        android:id="@+id/UrgentList"
-        android:name="andrew.organiser.myhead_v2.UrgentList"
-        android:label="@string/urgent_list_label"
-        tools:layout="@layout/urgent_list">
+        android:id="@+id/MasterList"
+        android:name="andrew.organiser.myhead_v3.FragmentMasterList"
+        android:label="@string/master_list_label"
+        tools:layout="@layout/master_list">
         <action
-            android:id="@+id/action_UrgentList_to_TaskAddEdit"
+            android:id="@+id/action_MasterList_to_TaskAddEdit"
             app:destination="@id/TaskAddEdit" />
     </fragment>
     <fragment
         android:id="@+id/Settings"
-        android:name="andrew.organiser.myhead_v2.Settings"
+        android:name="andrew.organiser.myhead_v3.FragmentSettingsMenu"
         android:label="@string/settings_label"
-        tools:layout="@layout/settings">
+        tools:layout="@layout/settings_menu">
+        <action
+            android:id="@+id/action_SettingsMenu_to_SettingsFile"
+            app:destination="@id/SettingsFile" />
+        <action
+            android:id="@+id/action_SettingsMenu_to_SettingsColour"
+            app:destination="@id/SettingsColour" />
+    </fragment>
+    <fragment
+        android:id="@+id/SettingsFile"
+        android:name="andrew.organiser.myhead_v3.FragmentSettingsFile"
+        android:label="@string/settings_file_label"
+        tools:layout="@layout/settings_file">
+    </fragment>
+    <fragment
+        android:id="@+id/SettingsColour"
+        android:name="andrew.organiser.myhead_v3.FragmentSettingsColour"
+        android:label="@string/settings_colour_label"
+        tools:layout="@layout/settings_colour">
     </fragment>
 
     <!--Global Actions -->

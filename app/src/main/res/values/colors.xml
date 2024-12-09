@@ -9,6 +9,7 @@
     <color name="background2">#FFc0fca7</color>
     <color name="content">#FF0c033e</color>
     <color name="sub_content">#FF8694b1</color>
+    <color name="light_outline">#c4c9ff</color>
     <color name="neg_progress">#FFde3d3d</color>
     <color name="pos_progress">#FF5ed652</color>
 

@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ContextList">
+    tools:context=".FragmentContextList">
 
 <androidx.core.widget.NestedScrollView
     android:layout_width="match_parent"
@@ -21,7 +21,7 @@
                 android:id="@+id/subtitle_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/app_name"
+                android:text="@string/context_warning"
                 android:textSize="20sp"
                 android:textColor="@color/sub_content"
                 android:lines="2"
@@ -42,7 +42,7 @@
         android:layout_gravity="bottom|end"
         android:layout_marginEnd="@dimen/fab_margin"
         android:layout_marginBottom="80dp"
-        app:srcCompat="@android:drawable/ic_menu_recent_history"
+        app:srcCompat="@drawable/ic_menu_list"
         app:backgroundTint="#fd4a4a"
         app:maxImageSize="30dp"
         app:tint="#000000"

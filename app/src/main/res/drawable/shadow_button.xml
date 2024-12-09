@@ -14,9 +14,9 @@
         </shape>
     </item>
     <!-- Default foreground. -->
-    <item android:bottom="5dp" android:right="3dp">
+    <item android:id="@+id/foregroundDrawable" android:bottom="5dp" android:right="3dp">
         <shape>
-            <solid android:color="@color/background" />
+            <solid android:color="#FF50BEFF" />
             <corners android:radius="15dp" />
             <padding android:bottom="5dp" android:right="3dp"/>
         </shape>

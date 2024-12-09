@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">My Head v2</string>
+    <string name="app_name">My Head v3</string>
     <string name="action_settings">Settings</string>
     <!-- Strings used for fragments for navigation -->
     <string name="context_list_label">Context List</string>
@@ -8,11 +8,14 @@
     <string name="context_type">Context Type:</string>
     <string name="context_label">Context:</string>
 
+    <string name="blank_label"> </string>
     <string name="task_list_label">Task List</string>
     <string name="archive_list_label">Archive List</string>
     <string name="task_add_edit_label">Task Add/Edit</string>
-    <string name="urgent_list_label">Urgent Task List</string>
+    <string name="master_list_label">Master Task List</string>
     <string name="settings_label">Settings</string>
+    <string name="settings_file_label">Settings File</string>
+    <string name="settings_colour_label">Settings Colour</string>
     <string name="task_name">Task:</string>
     <string name="motive_name">Motive:</string>
     <string name="complexity_name">Complexity:</string>
@@ -22,24 +25,57 @@
     <string name="frequency_name">Frequency:</string>
     <string name="condition_name">Condition:</string>
     <string name="notes_name">Notes:</string>
-    <string name="repeat_name">Repeat Task:</string>
-    <string name="date_hint">Enter Date</string>
+    <string name="completed_name">Completed:\t\t\t</string>
+    <string name="checklist_name">Checklist:\t\t\t\t\t</string>
+    <string name="repeat_name">Repeat Task:\t</string>
+    <string name="repeat_until">Task repeats:</string>
+    <string name="date_hint">Date</string>
+    <string name="due_date_hint">Due Date</string>
     <string name="export_label">Export Data for Backup:</string>
+    <string name="import_label">Import from Downloads Folder:</string>
+    <string name="colour_overdue_label">Overdue colour:</string>
+    <string name="colour_today_label">Today colour:</string>
+    <string name="colour_tomorrow_label">Tomorrow colour:</string>
+    <string name="colour_three_days_label">Within 3 Days colour:</string>
+    <string name="colour_week_label">This Week colour:</string>
+    <string name="colour_week_plus_label">Over 1 Week colour:</string>
+    <string name="colour_conditional_label">Conditional colour:</string>
+    <string name="colour_pending_label">Pending Soon colour:</string>
+    <string name="colour_complete_label">Completed colour:</string>
+    <string name="export_hint">Enter Export File Name</string>
+    <string name="subtask_hint">Enter checklist item</string>
 
     <string name="warning">Warning</string>
     <string name="context_warning">No contexts listed.\nPlease add context.</string>
     <string name="task_warning">No tasks listed.\nPlease add task.</string>
     <string name="archive_warning">No tasks archived.\nNeed to complete tasks.</string>
-    <string name="urgent_warning">No urgent tasks listed.\nAll caught up.</string>
+    <string name="urgent_warning">No tasks listed.\nAll caught up.</string>
     <string name="clone_warning">Cannot match names with other items.</string>
     <string name="max_character_warning">Name cannot exceed 60 characters in length</string>
     <string name="date_warning">Start date must not be before due date</string>
+    <string name="import_warning">Importing will override all data with backup.\n\nAre you sure?</string>
+    <string name="delete_warning">Are you sure you want to delete?</string>
 
     <string name="next">Next</string>
     <string name="previous">Previous</string>
     <string name="close">Close</string>
+    <string name="cancel">Cancel</string>
+    <string name="ok">OK</string>
     <string name="save">Save</string>
     <string name="delete">Delete</string>
+    <string name="add">+</string>
+
+
+    <string name="import_export">Import/Export</string>
+    <string name="ui_colours">UI Colours</string>
+    <string name="archive">Archive</string>
+
+
+    <string name="forever_repeats">Forever</string>
+    <string name="until_repeats">Until: </string>
+    <string name="after_repeats">After: </string>
+    <string name="x_times">x</string>
+    <string name="repeats_number">number of repeats</string>
 
 
     <!--Descriptions of widgets and xml objects-->
