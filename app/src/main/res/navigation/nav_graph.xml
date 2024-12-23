@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/ContextList"
-        android:name="andrew.organiser.myhead_v3.FragmentContextList"
+        android:name="andrew.organiser.myhead_v3.ui_fragments.U01ContextList"
         android:label="@string/context_list_label"
         tools:layout="@layout/context_list">
         <action
@@ -16,79 +16,47 @@
         <action
             android:id="@+id/action_ContextList_to_TaskList"
             app:destination="@id/TaskList" />
-        <action
-            android:id="@+id/action_ContextList_to_MasterList"
-            app:destination="@id/MasterList" />
     </fragment>
     <fragment
         android:id="@+id/ContextAddEdit"
-        android:name="andrew.organiser.myhead_v3.FragmentContextAddEdit"
+        android:name="andrew.organiser.myhead_v3.ui_fragments.U02ContextAddEdit"
         android:label="@string/context_add_edit_label"
         tools:layout="@layout/context_add_edit">
     </fragment>
     <fragment
         android:id="@+id/TaskList"
-        android:name="andrew.organiser.myhead_v3.FragmentTaskList"
+        android:name="andrew.organiser.myhead_v3.ui_fragments.U04TaskList"
         android:label=""
         tools:layout="@layout/task_list">
         <action
             android:id="@+id/action_TaskList_to_TaskAddEdit"
             app:destination="@id/TaskAddEdit" />
-        <action
-            android:id="@+id/action_TaskList_to_TaskArchive"
-            app:destination="@id/TaskArchive" />
     </fragment>
     <fragment
         android:id="@+id/TaskAddEdit"
-        android:name="andrew.organiser.myhead_v3.FragmentTaskAddEdit"
+        android:name="andrew.organiser.myhead_v3.ui_fragments.U05TaskAddEdit"
         android:label="@string/task_add_edit_label"
         tools:layout="@layout/task_add_edit">
     </fragment>
     <fragment
-        android:id="@+id/TaskArchive"
-        android:name="andrew.organiser.myhead_v3.FragmentTaskArchive"
-        android:label="@string/archive_list_label"
-        tools:layout="@layout/task_archive">
-        <action
-            android:id="@+id/action_TaskArchive_to_TaskAddEdit"
-            app:destination="@id/TaskAddEdit" />
-    </fragment>
-    <fragment
-        android:id="@+id/MasterList"
-        android:name="andrew.organiser.myhead_v3.FragmentMasterList"
-        android:label="@string/master_list_label"
-        tools:layout="@layout/master_list">
-        <action
-            android:id="@+id/action_MasterList_to_TaskAddEdit"
-            app:destination="@id/TaskAddEdit" />
-    </fragment>
-    <fragment
         android:id="@+id/Settings"
-        android:name="andrew.organiser.myhead_v3.FragmentSettingsMenu"
+        android:name="andrew.organiser.myhead_v3.ui_fragments.U03Settings"
         android:label="@string/settings_label"
-        tools:layout="@layout/settings_menu">
-        <action
-            android:id="@+id/action_SettingsMenu_to_SettingsFile"
-            app:destination="@id/SettingsFile" />
-        <action
-            android:id="@+id/action_SettingsMenu_to_SettingsColour"
-            app:destination="@id/SettingsColour" />
+        tools:layout="@layout/settings">
     </fragment>
     <fragment
-        android:id="@+id/SettingsFile"
-        android:name="andrew.organiser.myhead_v3.FragmentSettingsFile"
-        android:label="@string/settings_file_label"
-        tools:layout="@layout/settings_file">
+        android:id="@+id/HelpGuide"
+        android:name="andrew.organiser.myhead_v3.ui_fragments.U06HelpGuide"
+        android:label="@string/help_guide_label"
+        tools:layout="@layout/help_guide">
     </fragment>
-    <fragment
-        android:id="@+id/SettingsColour"
-        android:name="andrew.organiser.myhead_v3.FragmentSettingsColour"
-        android:label="@string/settings_colour_label"
-        tools:layout="@layout/settings_colour">
-    </fragment>
+
 
     <!--Global Actions -->
     <action
         android:id="@+id/navigate_to_Settings"
         app:destination="@id/Settings" />
+    <action
+        android:id="@+id/navigate_to_Help_Guide"
+        app:destination="@id/HelpGuide" />
 </navigation>

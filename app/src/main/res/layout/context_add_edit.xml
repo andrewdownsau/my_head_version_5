@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".FragmentContextAddEdit">
+    tools:context=".ui_fragments.U02ContextAddEdit">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/context_add_edit_layout"
@@ -43,7 +43,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
             android:lines="2"
-            android:text="@string/max_character_warning"
+            android:text="@string/character_warning"
             android:textSize="16sp"
             android:textColor="#fd4a4a"
             android:textAlignment="center"

@@ -3,8 +3,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="andrew.organiser.myhead_v3.MainActivity">
     <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:title="@string/action_settings"
-        app:showAsAction="never" />
+        android:id="@+id/overflowMenu"
+        android:icon="@drawable/ic_menu_hamburger"
+        android:title=""
+        app:showAsAction="always"
+        tools:ignore="AlwaysShowAction">
+        <menu>
+            <item
+                android:id="@+id/action_settings"
+                android:orderInCategory="1"
+                android:icon="@drawable/ic_menu_settings"
+                android:title="@string/action_settings"
+                app:showAsAction="never" />
+            <item
+                android:id="@+id/action_help_guide"
+                android:orderInCategory="2"
+                android:icon="@drawable/ic_menu_help"
+                android:title="@string/help_guide_label"
+                app:showAsAction="never" />
+        </menu>
+    </item>
 </menu>

@@ -1,0 +1,697 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui_fragments.U05TaskAddEdit">
+
+    <!-- Main constraint layout for UI Content -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/settings_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:minHeight="200dp"
+        android:padding="10dp">
+
+        <!-- General introduction to the App -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_general_intro"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            style="@style/menu_primary"
+            android:padding="15dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent">
+
+            <android.widget.Button
+                android:id="@+id/collapse_general_intro"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="@drawable/ic_menu_up"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/title_general_intro"/>
+
+            <TextView
+                android:id="@+id/title_general_intro"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:gravity="center_vertical"
+                android:text="@string/help_general_intro"
+                android:textSize="18sp"
+                android:textColor="@color/sub_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/collapse_general_intro" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout_body_general_intro"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="10dp"
+                android:visibility="gone"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/title_general_intro">
+                <TextView
+                    android:id="@+id/body_general_intro"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:text="@string/help_general_intro_body"
+                    android:textSize="18sp"
+                    android:textColor="@color/sub_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- Add, edit and delete contexts -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_crud_context"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            style="@style/menu_primary"
+            android:layout_marginTop="5dp"
+            android:padding="15dp"
+            app:layout_constraintTop_toBottomOf="@+id/layout_general_intro"
+            app:layout_constraintLeft_toLeftOf="parent">
+
+            <android.widget.Button
+                android:id="@+id/collapse_crud_context"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="@drawable/ic_menu_up"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/title_crud_context"/>
+
+            <TextView
+                android:id="@+id/title_crud_context"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:gravity="center_vertical"
+                android:text="@string/help_crud_contexts"
+                android:textSize="18sp"
+                android:textColor="@color/sub_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/collapse_crud_context" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout_body_crud_context"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="10dp"
+                android:visibility="gone"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/title_crud_context">
+
+                <TextView
+                    android:id="@+id/body_crud_context_add"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:text="@string/help_crud_contexts_body_add"
+                    android:textSize="18sp"
+                    android:textColor="@color/sub_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@id/body_crud_context_img1" />
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/body_crud_context_img1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/fab_margin"
+                    android:layout_marginTop="16dp"
+                    app:srcCompat="@android:drawable/ic_input_add"
+                    app:backgroundTint="@color/background"
+                    app:tint="@color/content"
+                    app:shapeAppearanceOverlay="@style/fab_rounded"
+                    android:contentDescription="@string/fab_add_context"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toRightOf="@id/body_crud_context_add"
+                    app:layout_constraintRight_toRightOf="parent"/>
+
+                <TextView
+                    android:id="@+id/body_crud_context_edit_delete"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical"
+                    android:text="@string/help_crud_contexts_body_edit_delete"
+                    android:textSize="18sp"
+                    android:textColor="@color/sub_content"
+                    app:layout_constraintTop_toBottomOf="@+id/body_crud_context_add"
+                    app:layout_constraintLeft_toLeftOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- Add, edit and delete tasks -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_crud_tasks"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            style="@style/menu_primary"
+            android:layout_marginTop="5dp"
+            android:padding="15dp"
+            app:layout_constraintTop_toBottomOf="@+id/layout_crud_context"
+            app:layout_constraintLeft_toLeftOf="parent">
+
+            <android.widget.Button
+                android:id="@+id/collapse_crud_tasks"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="@drawable/ic_menu_up"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/title_crud_tasks"/>
+
+            <TextView
+                android:id="@+id/title_crud_tasks"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:gravity="center_vertical"
+                android:text="@string/help_crud_tasks"
+                android:textSize="18sp"
+                android:textColor="@color/sub_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/collapse_crud_tasks" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout_body_crud_tasks"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="10dp"
+                android:visibility="gone"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/title_crud_tasks">
+
+                <TextView
+                    android:id="@+id/body_crud_tasks_add"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:text="@string/help_crud_tasks_body_add"
+                    android:textSize="18sp"
+                    android:textColor="@color/sub_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@id/body_crud_tasks_img1" />
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/body_crud_tasks_img1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/fab_margin"
+                    android:layout_marginTop="16dp"
+                    app:srcCompat="@android:drawable/ic_input_add"
+                    app:backgroundTint="@color/background"
+                    app:tint="@color/content"
+                    app:shapeAppearanceOverlay="@style/fab_rounded"
+                    android:contentDescription="@string/fab_add_context"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toRightOf="@id/body_crud_tasks_add"
+                    app:layout_constraintRight_toRightOf="parent"/>
+
+                <TextView
+                    android:id="@+id/body_crud_tasks_edit_delete"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical"
+                    android:text="@string/help_crud_tasks_body_edit_delete"
+                    android:textSize="18sp"
+                    android:textColor="@color/sub_content"
+                    app:layout_constraintTop_toBottomOf="@+id/body_crud_tasks_add"
+                    app:layout_constraintLeft_toLeftOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- Completing tasks -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_completing_tasks"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            style="@style/menu_primary"
+            android:layout_marginTop="5dp"
+            android:padding="15dp"
+            app:layout_constraintTop_toBottomOf="@+id/layout_crud_tasks"
+            app:layout_constraintLeft_toLeftOf="parent">
+
+            <android.widget.Button
+                android:id="@+id/collapse_completing_tasks"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="@drawable/ic_menu_up"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/title_completing_tasks"/>
+
+            <TextView
+                android:id="@+id/title_completing_tasks"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:gravity="center_vertical"
+                android:text="@string/help_completing_tasks"
+                android:textSize="18sp"
+                android:textColor="@color/sub_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/collapse_completing_tasks" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout_body_completing_tasks"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="10dp"
+                android:visibility="gone"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/title_completing_tasks">
+                <TextView
+                    android:id="@+id/body_completing_tasks"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:text="@string/help_completing_tasks_body"
+                    android:textSize="18sp"
+                    android:textColor="@color/sub_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- Task Archive and auto delete -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_task_archive"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            style="@style/menu_primary"
+            android:layout_marginTop="5dp"
+            android:padding="15dp"
+            app:layout_constraintTop_toBottomOf="@+id/layout_completing_tasks"
+            app:layout_constraintLeft_toLeftOf="parent">
+
+            <android.widget.Button
+                android:id="@+id/collapse_task_archive"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="@drawable/ic_menu_up"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/title_task_archive"/>
+
+            <TextView
+                android:id="@+id/title_task_archive"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:gravity="center_vertical"
+                android:text="@string/help_task_archive"
+                android:textSize="18sp"
+                android:textColor="@color/sub_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/collapse_task_archive" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout_body_task_archive"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="10dp"
+                android:visibility="gone"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/title_task_archive">
+
+                <TextView
+                    android:id="@+id/body_task_archive"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:text="@string/help_task_archive_body"
+                    android:textSize="18sp"
+                    android:textColor="@color/sub_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@id/body_task_archive_img1" />
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/body_task_archive_img1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/fab_margin"
+                    android:layout_marginTop="16dp"
+                    app:srcCompat="@drawable/ic_archive_folder"
+                    app:backgroundTint="#f9e07b"
+                    app:tint="@color/content"
+                    app:shapeAppearanceOverlay="@style/fab_rounded"
+                    android:contentDescription="@string/fab_add_context"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toRightOf="@id/body_task_archive"
+                    app:layout_constraintRight_toRightOf="parent"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- Tasks status and colors -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_task_status"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            style="@style/menu_primary"
+            android:layout_marginTop="5dp"
+            android:padding="15dp"
+            app:layout_constraintTop_toBottomOf="@+id/layout_task_archive"
+            app:layout_constraintLeft_toLeftOf="parent">
+
+            <android.widget.Button
+                android:id="@+id/collapse_task_status"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="@drawable/ic_menu_up"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/title_task_status"/>
+
+            <TextView
+                android:id="@+id/title_task_status"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:gravity="center_vertical"
+                android:text="@string/help_task_status"
+                android:textSize="18sp"
+                android:textColor="@color/sub_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/collapse_task_status" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout_body_task_status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="10dp"
+                android:visibility="gone"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/title_task_status">
+                <TextView
+                    android:id="@+id/body_task_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:text="@string/help_task_status_body"
+                    android:textSize="18sp"
+                    android:textColor="@color/sub_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- Tasks complexity and motivation -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_task_sliders"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            style="@style/menu_primary"
+            android:layout_marginTop="5dp"
+            android:padding="15dp"
+            app:layout_constraintTop_toBottomOf="@+id/layout_task_status"
+            app:layout_constraintLeft_toLeftOf="parent">
+
+            <android.widget.Button
+                android:id="@+id/collapse_task_sliders"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="@drawable/ic_menu_up"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/title_task_sliders"/>
+
+            <TextView
+                android:id="@+id/title_task_sliders"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:gravity="center_vertical"
+                android:text="@string/help_task_sliders"
+                android:textSize="18sp"
+                android:textColor="@color/sub_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/collapse_task_sliders" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout_body_task_sliders"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="10dp"
+                android:visibility="gone"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/title_task_sliders">
+                <TextView
+                    android:id="@+id/body_task_sliders"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:text="@string/help_task_sliders_body"
+                    android:textSize="18sp"
+                    android:textColor="@color/sub_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- Task checklist and subtasks -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_task_checklist"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            style="@style/menu_primary"
+            android:layout_marginTop="5dp"
+            android:padding="15dp"
+            app:layout_constraintTop_toBottomOf="@+id/layout_task_sliders"
+            app:layout_constraintLeft_toLeftOf="parent">
+
+            <android.widget.Button
+                android:id="@+id/collapse_task_checklist"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="@drawable/ic_menu_up"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/title_task_checklist"/>
+
+            <TextView
+                android:id="@+id/title_task_checklist"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:gravity="center_vertical"
+                android:text="@string/help_task_checklist"
+                android:textSize="18sp"
+                android:textColor="@color/sub_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/collapse_task_checklist" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout_body_task_checklist"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="10dp"
+                android:visibility="gone"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/title_task_checklist">
+                <TextView
+                    android:id="@+id/body_task_checklist"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:text="@string/help_task_checklist_body"
+                    android:textSize="18sp"
+                    android:textColor="@color/sub_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- Repeating tasks -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_repeating_tasks"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            style="@style/menu_primary"
+            android:layout_marginTop="5dp"
+            android:padding="15dp"
+            app:layout_constraintTop_toBottomOf="@+id/layout_task_checklist"
+            app:layout_constraintLeft_toLeftOf="parent">
+
+            <android.widget.Button
+                android:id="@+id/collapse_repeating_tasks"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="@drawable/ic_menu_up"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/title_repeating_tasks"/>
+
+            <TextView
+                android:id="@+id/title_repeating_tasks"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:gravity="center_vertical"
+                android:text="@string/help_repeating_tasks"
+                android:textSize="18sp"
+                android:textColor="@color/sub_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/collapse_repeating_tasks" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout_body_repeating_tasks"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="10dp"
+                android:visibility="gone"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/title_repeating_tasks">
+                <TextView
+                    android:id="@+id/body_repeating_tasks"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:text="@string/help_repeating_tasks_body"
+                    android:textSize="18sp"
+                    android:textColor="@color/sub_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- Conditional tasks -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_conditional_tasks"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            style="@style/menu_primary"
+            android:layout_marginTop="5dp"
+            android:padding="15dp"
+            app:layout_constraintTop_toBottomOf="@+id/layout_repeating_tasks"
+            app:layout_constraintLeft_toLeftOf="parent">
+
+            <android.widget.Button
+                android:id="@+id/collapse_conditional_tasks"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="@drawable/ic_menu_up"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/title_conditional_tasks"/>
+
+            <TextView
+                android:id="@+id/title_conditional_tasks"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:gravity="center_vertical"
+                android:text="@string/help_conditional_tasks"
+                android:textSize="18sp"
+                android:textColor="@color/sub_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/collapse_conditional_tasks" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout_body_conditional_tasks"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="10dp"
+                android:visibility="gone"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/title_conditional_tasks">
+                <TextView
+                    android:id="@+id/body_conditional_tasks"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:text="@string/help_conditional_tasks_body"
+                    android:textSize="18sp"
+                    android:textColor="@color/sub_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- Task sort order and settings -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_task_order"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            style="@style/menu_primary"
+            android:layout_marginTop="5dp"
+            android:padding="15dp"
+            app:layout_constraintTop_toBottomOf="@+id/layout_conditional_tasks"
+            app:layout_constraintLeft_toLeftOf="parent">
+
+            <android.widget.Button
+                android:id="@+id/collapse_task_order"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="@drawable/ic_menu_up"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/title_task_order"/>
+
+            <TextView
+                android:id="@+id/title_task_order"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:gravity="center_vertical"
+                android:text="@string/help_task_order"
+                android:textSize="18sp"
+                android:textColor="@color/sub_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/collapse_task_order" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout_body_task_order"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="10dp"
+                android:visibility="gone"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/title_task_order">
+                <TextView
+                    android:id="@+id/body_task_order"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:text="@string/help_task_order_body"
+                    android:textSize="18sp"
+                    android:textColor="@color/sub_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

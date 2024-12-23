@@ -14,6 +14,7 @@
     <string name="task_add_edit_label">Task Add/Edit</string>
     <string name="master_list_label">Master Task List</string>
     <string name="settings_label">Settings</string>
+    <string name="help_guide_label">Help Guide</string>
     <string name="settings_file_label">Settings File</string>
     <string name="settings_colour_label">Settings Colour</string>
     <string name="task_name">Task:</string>
@@ -33,6 +34,15 @@
     <string name="due_date_hint">Due Date</string>
     <string name="export_label">Export Data for Backup:</string>
     <string name="import_label">Import from Downloads Folder:</string>
+    <string name="feature_motivation_label">Motivation Rating:</string>
+    <string name="feature_complexity_label">Complexity Rating:</string>
+    <string name="feature_checklist_label">Checklist and Sub-tasks:</string>
+    <string name="feature_repeat_label">Repeating Tasks:</string>
+    <string name="feature_condition_label">Conditional Tasks:</string>
+    <string name="feature_timePB_label">Time Progress Bar:</string>
+    <string name="feature_checklistPB_label">Checklist Progress Bar:</string>
+    <string name="status_incomplete_label">Incomplete: High</string>
+    <string name="status_pending_label">Pending: Low</string>
     <string name="colour_overdue_label">Overdue colour:</string>
     <string name="colour_today_label">Today colour:</string>
     <string name="colour_tomorrow_label">Tomorrow colour:</string>
@@ -42,6 +52,8 @@
     <string name="colour_conditional_label">Conditional colour:</string>
     <string name="colour_pending_label">Pending Soon colour:</string>
     <string name="colour_complete_label">Completed colour:</string>
+    <string name="colour_timePB_label">Time Bar colour:</string>
+    <string name="colour_checklistPB_label">Checklist Bar colour:</string>
     <string name="export_hint">Enter Export File Name</string>
     <string name="subtask_hint">Enter checklist item</string>
 
@@ -51,10 +63,12 @@
     <string name="archive_warning">No tasks archived.\nNeed to complete tasks.</string>
     <string name="urgent_warning">No tasks listed.\nAll caught up.</string>
     <string name="clone_warning">Cannot match names with other items.</string>
-    <string name="max_character_warning">Name cannot exceed 60 characters in length</string>
+    <string name="character_warning">Name must be 1 – 59 characters long</string>
     <string name="date_warning">Start date must not be before due date</string>
     <string name="import_warning">Importing will override all data with backup.\n\nAre you sure?</string>
     <string name="delete_warning">Are you sure you want to delete?</string>
+    <string name="archive_delete_warning">This feature may result in archived tasks being deleted.\n\nAre you sure?</string>
+    <string name="reset_warning">Resetting settings to default values.\n\nAre you sure?</string>
 
     <string name="next">Next</string>
     <string name="previous">Previous</string>
@@ -63,11 +77,15 @@
     <string name="ok">OK</string>
     <string name="save">Save</string>
     <string name="delete">Delete</string>
+    <string name="reset">Reset</string>
     <string name="add">+</string>
 
 
-    <string name="import_export">Import/Export</string>
-    <string name="ui_colours">UI Colours</string>
+    <string name="task_features"><u>Task Features</u></string>
+    <string name="task_sorting_order"><u>Task Sorting Order</u></string>
+    <string name="ui_colours"><u>UI Colours</u></string>
+    <string name="archive_delete"><u>Archive Auto Delete:</u></string>
+    <string name="default_reset"><u>Reset Settings to Default</u></string>
     <string name="archive">Archive</string>
 
 
@@ -76,16 +94,47 @@
     <string name="after_repeats">After: </string>
     <string name="x_times">x</string>
     <string name="repeats_number">number of repeats</string>
+    <string name="after_days_1">After </string>
+    <string name="after_days_2"> Day/s</string>
+    <string name="never">Never</string>
 
+    <!--Tags for checkboxes-->
+    <string name="tag_complete">tag_complete</string>
+    <string name="tag_checklist">tag_checklist</string>
+    <string name="tag_repeat">tag_repeat</string>
+
+    <!--Help Topic Titles -->
+    <string name="help_general_intro"><u>General Intro to App</u></string>
+    <string name="help_crud_contexts"><u>Add, edit and delete contexts</u></string>
+    <string name="help_crud_tasks"><u>Add, edit and delete tasks</u></string>
+    <string name="help_completing_tasks"><u>Completing Tasks</u></string>
+    <string name="help_task_archive"><u>Task Archive and auto delete</u></string>
+    <string name="help_task_status"><u>Task status and colors</u></string>
+    <string name="help_task_sliders"><u>Task Complexity and Motivation</u></string>
+    <string name="help_task_checklist"><u>Task Checklists and Subtasks</u></string>
+    <string name="help_repeating_tasks"><u>Repeating Tasks</u></string>
+    <string name="help_conditional_tasks"><u>Conditional Tasks</u></string>
+    <string name="help_task_order"><u>Task sort order and settings</u></string>
+
+
+    <!--Help Topic Content -->
+
+    <string name="help_general_intro_body">Welcome to the My Head app. This app is designed to help you organise tasks in a way that works for you. Start by creating a list of contexts for your life. These can include common examples like \'work\' or \'home\', or can be more specific to projects or goals you are pursuing. The tasks can then be created for each context or in the master list. Tasks can include whichever features you would like to use and also control how the tasks can be ordered depending on your priorities. Check out some of the other help guides for more specific information.</string>
+    <string name="help_crud_contexts_body_add"><u>Add:</u> A context can be added from the context list page using the plus button located at the bottom right corner of the screen.</string>
+    <string name="help_crud_contexts_body_edit_delete"><u>Edit &amp; Delete:</u> Contexts from the list can be edited and deleted by long pressing the context item (hold your finger on the context item for 2 seconds). This will bring you back to the context add/edit page where you can re-save the context name or delete it. \nNote: Deleting a context will also delete all tasks currently linked to that context so be careful.</string>
+    <string name="help_crud_tasks_body_add"><u>Add:</u> A task can be added from any task list page using the plus button located at the bottom right corner of the screen. This will take you to the task details page where you can add the task\'s name, dates and any additional feature details you need.</string>
+    <string name="help_crud_tasks_body_edit_delete"><u>Edit &amp; Delete:</u> Tasks from any task list can be edited and deleted by short pressing the task item (tap your finger on the task item). This will bring you back to the task add/edit page where you can re-save the task details or delete it entirely. \nNote: Deleting a task will also delete all sub-tasks in that task\'s checklist so be careful.</string>
+    <string name="help_completing_tasks_body">Completing tasks allows you to see what is left to do. After a day, completed tasks either go to the archive or else get refreshed for repeated tasks. \nTo complete a task, you can either long press a task in any list (hold your finger on the task item for 2 seconds) or else you can set the completed status and date in the task\'s details page.</string>
+    <string name="help_task_archive_body">The task archive is a list of tasks that were completed before today. You can access these archived tasks by pressing the folder button in each task list. The auto-delete archive function can be set through the settings page.</string>
+    <string name="help_task_status_body">Tasks are assigned a color through the app based on how urgent it is, whether it has a condition, is coming up soon or is completed. You can set the colors via the settings page to customise as you prefer.</string>
+    <string name="help_task_sliders_body">Complexity and motivation ratings are additional features of tasks. These can be activated via the settings page and are used to help sort tasks in more customisable options. If a task has a complexity rating of 2 or lower, then it be underlined in the lists. See \"Task sort order and settings\" for more info.</string>
+    <string name="help_task_checklist_body">Checklists for tasks are an additional feature of tasks that can be activated via the settings page. In the task details page, the checklist checkbox must be checked for subtasks to be added. Subtask items must have at least 1 character but do not need a due date set. Once saved, the earliest incomplete subtask date is used to rate the urgency of the task.</string>
+    <string name="help_repeating_tasks_body">Repeating tasks are an additional feature of tasks that can be activated via the settings page. In the task details page, tasks can be repeated by checking the \"Repeat Task\" checkbox and setting the frequency then the repeat option of either forever, until date or after number of repeats. If these are set correctly then completed tasks from before today will update the task dates and repeat options as required.</string>
+    <string name="help_conditional_tasks_body"><u>Special Feature:</u> Conditional tasks are a unique additional feature of tasks that can be activated via the settings page. In the tasks details page you can make the current task item conditional to completing other tasks. This means that the current task item will be given the \"Conditional\" color status and will be moved to the \"Pending\" task section of the list sorting function. Once the conditional task has been completed, all tasks that used it as a condition will be cleared of their pending status.</string>
+    <string name="help_task_order_body">By default the system sorts your tasks for you. This entails moving completed and pending tasks to the bottom of the list and sorting the active tasks by due date, complexity and motivation, all in ascending order. These settings can be adapted in the settings page as needed, either changing the order of the active sorting priority or by changing the order of the sorting functions (ascending to descending, high to low).</string>
 
     <!--Descriptions of widgets and xml objects-->
     <string name="fab_add_context">Floating button in context list fragment of main activity. Designed to initiate process for adding a new context to the system.</string>
-
-    <!--Dropdown string arrays-->
-    <string-array name="context_types">
-        <item>Time</item>
-        <item>Place</item>
-    </string-array>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
