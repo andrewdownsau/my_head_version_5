@@ -5,16 +5,16 @@ plugins {
 }
 
 android {
-    namespace = "andrew.organiser.myhead_v3"
+    namespace = "andrew.organiser.my_head_v5"
     compileSdk = 34
 
 
     defaultConfig {
-        applicationId = "andrew.organiser.myhead_v3"
+        applicationId = "andrew.organiser.my_head_v5"
         minSdk = 31
         targetSdk = 34
         versionCode = 1
-        versionName = "1.0"
+        versionName = "v4.0.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }

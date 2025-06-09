@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/ContextList"
-        android:name="andrew.organiser.myhead_v3.ui_fragments.U01ContextList"
+        android:name="andrew.organiser.my_head_v5.ui_fragments.U01ContextList"
         android:label="@string/context_list_label"
         tools:layout="@layout/context_list">
         <action
@@ -19,13 +19,13 @@
     </fragment>
     <fragment
         android:id="@+id/ContextAddEdit"
-        android:name="andrew.organiser.myhead_v3.ui_fragments.U02ContextAddEdit"
+        android:name="andrew.organiser.my_head_v5.ui_fragments.U02ContextAddEdit"
         android:label="@string/context_add_edit_label"
         tools:layout="@layout/context_add_edit">
     </fragment>
     <fragment
         android:id="@+id/TaskList"
-        android:name="andrew.organiser.myhead_v3.ui_fragments.U04TaskList"
+        android:name="andrew.organiser.my_head_v5.ui_fragments.U04TaskList"
         android:label=""
         tools:layout="@layout/task_list">
         <action
@@ -34,19 +34,19 @@
     </fragment>
     <fragment
         android:id="@+id/TaskAddEdit"
-        android:name="andrew.organiser.myhead_v3.ui_fragments.U05TaskAddEdit"
+        android:name="andrew.organiser.my_head_v5.ui_fragments.U05TaskAddEdit"
         android:label="@string/task_add_edit_label"
         tools:layout="@layout/task_add_edit">
     </fragment>
     <fragment
         android:id="@+id/Settings"
-        android:name="andrew.organiser.myhead_v3.ui_fragments.U03Settings"
+        android:name="andrew.organiser.my_head_v5.ui_fragments.U03Settings"
         android:label="@string/settings_label"
         tools:layout="@layout/settings">
     </fragment>
     <fragment
         android:id="@+id/HelpGuide"
-        android:name="andrew.organiser.myhead_v3.ui_fragments.U06HelpGuide"
+        android:name="andrew.organiser.my_head_v5.ui_fragments.U06HelpGuide"
         android:label="@string/help_guide_label"
         tools:layout="@layout/help_guide">
     </fragment>

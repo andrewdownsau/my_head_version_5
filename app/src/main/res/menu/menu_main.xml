@@ -1,7 +1,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="andrew.organiser.myhead_v3.MainActivity">
+    tools:context="andrew.organiser.my_head_v5.MainActivity">
     <item
         android:id="@+id/overflowMenu"
         android:icon="@drawable/ic_menu_hamburger"

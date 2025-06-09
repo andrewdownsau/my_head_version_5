@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Default foreground. -->
+    <item android:id="@+id/foregroundDrawable" android:bottom="5dp" android:right="3dp">
+        <shape>
+            <solid android:color="#FFaaaaaa" />
+            <corners android:radius="5dp" />
+            <stroke android:width="1dp" />
+            <padding android:bottom="5dp" android:right="3dp"/>
+        </shape>
+    </item>
+</layer-list>

@@ -45,7 +45,8 @@
                 android:theme="@style/SCBSwitch"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/title_task_features" />
+                app:layout_constraintTop_toBottomOf="@id/title_task_features"
+                tools:ignore="VisualLintButtonSize"/>
 
             <com.google.android.material.switchmaterial.SwitchMaterial
                 android:id="@+id/feature_complexity"
@@ -58,7 +59,8 @@
                 android:theme="@style/SCBSwitch"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/feature_motivation" />
+                app:layout_constraintTop_toBottomOf="@id/feature_motivation"
+                tools:ignore="VisualLintButtonSize"/>
 
             <com.google.android.material.switchmaterial.SwitchMaterial
                 android:id="@+id/feature_checklist"
@@ -71,7 +73,8 @@
                 android:theme="@style/SCBSwitch"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/feature_complexity" />
+                app:layout_constraintTop_toBottomOf="@id/feature_complexity"
+                tools:ignore="VisualLintButtonSize" />
 
             <com.google.android.material.switchmaterial.SwitchMaterial
                 android:id="@+id/feature_repeat"
@@ -84,7 +87,8 @@
                 android:theme="@style/SCBSwitch"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/feature_checklist" />
+                app:layout_constraintTop_toBottomOf="@id/feature_checklist"
+                tools:ignore="VisualLintButtonSize"/>
 
             <com.google.android.material.switchmaterial.SwitchMaterial
                 android:id="@+id/feature_condition"
@@ -97,7 +101,8 @@
                 android:theme="@style/SCBSwitch"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/feature_repeat" />
+                app:layout_constraintTop_toBottomOf="@id/feature_repeat"
+                tools:ignore="VisualLintButtonSize"/>
 
             <com.google.android.material.switchmaterial.SwitchMaterial
                 android:id="@+id/feature_time_progress"
@@ -105,12 +110,13 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:text="@string/feature_timePB_label"
-                android:textSize="16sp"
                 android:textColor="@color/sub_content"
+                android:textSize="16sp"
                 android:theme="@style/SCBSwitch"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/feature_condition" />
+                app:layout_constraintTop_toBottomOf="@id/feature_condition"
+                tools:ignore="VisualLintButtonSize,TouchTargetSizeCheck" />
 
             <com.google.android.material.switchmaterial.SwitchMaterial
                 android:id="@+id/feature_checklist_progress"
@@ -123,7 +129,8 @@
                 android:theme="@style/SCBSwitch"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/feature_time_progress" />
+                app:layout_constraintTop_toBottomOf="@id/feature_time_progress"
+                tools:ignore="VisualLintButtonSize" />
 
 
             <android.widget.Button
@@ -173,13 +180,15 @@
 
                 <android.widget.Button
                     android:id="@+id/button_incomplete_status"
-                    android:layout_width="80px"
-                    android:layout_height="80px"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:layout_marginTop="5dp"
-                    android:background="@mipmap/ic_menu_high"
+                    android:background="@mipmap/icon_high"
+                    android:contentDescription="@string/settings_order_button"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toLeftOf="@id/label_incomplete_status"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="TouchTargetSizeCheck" />
 
                 <TextView
                     android:id="@+id/label_incomplete_status"
@@ -194,13 +203,15 @@
 
                 <android.widget.Button
                     android:id="@+id/button_pending_status"
-                    android:layout_width="80px"
-                    android:layout_height="80px"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:layout_marginTop="10dp"
-                    android:background="@mipmap/ic_menu_low"
+                    android:background="@mipmap/icon_low"
+                    android:contentDescription="@string/settings_order_button"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toLeftOf="@id/label_pending_status"
-                    app:layout_constraintTop_toBottomOf="@id/button_incomplete_status" />
+                    app:layout_constraintTop_toBottomOf="@id/button_incomplete_status"
+                    tools:ignore="TouchTargetSizeCheck" />
 
                 <TextView
                     android:id="@+id/label_pending_status"
@@ -276,12 +287,13 @@
             <EditText
                 android:id="@+id/edit_colour_overdue"
                 android:layout_width="100dp"
-                android:layout_height="wrap_content"
+                android:layout_height="48dp"
                 android:layout_marginStart="40dp"
                 android:autofillHints="Name of export file"
                 android:inputType="text"
                 android:textColor="@color/sub_content"
                 android:labelFor="@id/label_colour_overdue"
+                android:hint="@string/color_hint"
                 app:layout_constraintHorizontal_chainStyle="spread"
                 app:layout_constraintBottom_toBottomOf="@id/label_colour_overdue"
                 app:layout_constraintLeft_toRightOf="@id/label_colour_overdue"
@@ -295,9 +307,11 @@
                 android:layout_height="36dp"
                 android:layout_marginBottom="5dp"
                 android:background="#dddddd"
+                android:contentDescription="@string/settings_color_image"
                 app:layout_constraintLeft_toRightOf="@id/edit_colour_overdue"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintBottom_toBottomOf="@id/edit_colour_overdue" />
+                app:layout_constraintBottom_toBottomOf="@id/edit_colour_overdue"
+                tools:ignore="TouchTargetSizeCheck" />
 
             <TextView
                 android:id="@+id/label_colour_today"
@@ -314,11 +328,12 @@
             <EditText
                 android:id="@+id/edit_colour_today"
                 android:layout_width="100dp"
-                android:layout_height="wrap_content"
+                android:layout_height="48dp"
                 android:autofillHints="Name of export file"
                 android:inputType="text"
                 android:textColor="@color/sub_content"
                 android:labelFor="@id/label_colour_today"
+                android:hint="@string/color_hint"
                 app:layout_constraintBottom_toBottomOf="@id/label_colour_today"
                 app:layout_constraintLeft_toLeftOf="@id/edit_colour_overdue"
                 app:layout_constraintRight_toRightOf="@id/edit_colour_overdue"
@@ -331,10 +346,11 @@
                 android:layout_height="36dp"
                 android:layout_marginBottom="5dp"
                 android:background="#dddddd"
-                style="@style/button_primary"
+                android:contentDescription="@string/settings_color_image"
                 app:layout_constraintBottom_toBottomOf="@id/edit_colour_today"
                 app:layout_constraintLeft_toLeftOf="@id/button_colour_overdue"
-                app:layout_constraintRight_toRightOf="@id/button_colour_overdue"/>
+                app:layout_constraintRight_toRightOf="@id/button_colour_overdue"
+                tools:ignore="TouchTargetSizeCheck"/>
 
             <TextView
                 android:id="@+id/label_colour_tomorrow"
@@ -351,12 +367,13 @@
             <EditText
                 android:id="@+id/edit_colour_tomorrow"
                 android:layout_width="100dp"
-                android:layout_height="wrap_content"
+                android:layout_height="48dp"
                 android:layout_marginTop="20dp"
-                android:autofillHints="Name of export file"
+                android:autofillHints="@string/color_hint"
                 android:inputType="text"
                 android:textColor="@color/sub_content"
                 android:labelFor="@id/label_colour_tomorrow"
+                android:hint="@string/color_hint"
                 app:layout_constraintBottom_toBottomOf="@id/label_colour_tomorrow"
                 app:layout_constraintLeft_toLeftOf="@id/edit_colour_overdue"
                 app:layout_constraintRight_toRightOf="@id/edit_colour_overdue"
@@ -369,10 +386,11 @@
                 android:layout_height="36dp"
                 android:layout_marginBottom="5dp"
                 android:background="#dddddd"
-                style="@style/button_primary"
+                android:contentDescription="@string/settings_color_image"
                 app:layout_constraintBottom_toBottomOf="@id/edit_colour_tomorrow"
                 app:layout_constraintLeft_toLeftOf="@id/button_colour_overdue"
-                app:layout_constraintRight_toRightOf="@id/button_colour_overdue"/>
+                app:layout_constraintRight_toRightOf="@id/button_colour_overdue"
+                tools:ignore="TouchTargetSizeCheck"/>
 
             <TextView
                 android:id="@+id/label_colour_three_days"
@@ -389,12 +407,13 @@
             <EditText
                 android:id="@+id/edit_colour_three_days"
                 android:layout_width="100dp"
-                android:layout_height="wrap_content"
+                android:layout_height="48dp"
                 android:layout_marginTop="20dp"
-                android:autofillHints="Name of export file"
+                android:autofillHints="@string/color_hint"
                 android:inputType="text"
                 android:textColor="@color/sub_content"
                 android:labelFor="@id/label_colour_three_days"
+                android:hint="@string/color_hint"
                 app:layout_constraintBottom_toBottomOf="@id/label_colour_three_days"
                 app:layout_constraintLeft_toLeftOf="@id/edit_colour_overdue"
                 app:layout_constraintRight_toRightOf="@id/edit_colour_overdue"
@@ -407,10 +426,11 @@
                 android:layout_height="36dp"
                 android:layout_marginBottom="5dp"
                 android:background="#dddddd"
-                style="@style/button_primary"
+                android:contentDescription="@string/settings_color_image"
                 app:layout_constraintBottom_toBottomOf="@id/edit_colour_three_days"
                 app:layout_constraintLeft_toLeftOf="@id/button_colour_overdue"
-                app:layout_constraintRight_toRightOf="@id/button_colour_overdue"/>
+                app:layout_constraintRight_toRightOf="@id/button_colour_overdue"
+                tools:ignore="TouchTargetSizeCheck"/>
 
             <TextView
                 android:id="@+id/label_colour_week"
@@ -427,12 +447,13 @@
             <EditText
                 android:id="@+id/edit_colour_week"
                 android:layout_width="100dp"
-                android:layout_height="wrap_content"
+                android:layout_height="48dp"
                 android:layout_marginTop="20dp"
-                android:autofillHints="Name of export file"
+                android:autofillHints="@string/color_hint"
                 android:inputType="text"
                 android:textColor="@color/sub_content"
                 android:labelFor="@id/label_colour_week"
+                android:hint="@string/color_hint"
                 app:layout_constraintBottom_toBottomOf="@id/label_colour_week"
                 app:layout_constraintLeft_toLeftOf="@id/edit_colour_overdue"
                 app:layout_constraintRight_toRightOf="@id/edit_colour_overdue"
@@ -445,10 +466,11 @@
                 android:layout_height="36dp"
                 android:layout_marginBottom="5dp"
                 android:background="#dddddd"
-                style="@style/button_primary"
+                android:contentDescription="@string/settings_color_image"
                 app:layout_constraintBottom_toBottomOf="@id/edit_colour_week"
                 app:layout_constraintLeft_toLeftOf="@id/button_colour_overdue"
-                app:layout_constraintRight_toRightOf="@id/button_colour_overdue"/>
+                app:layout_constraintRight_toRightOf="@id/button_colour_overdue"
+                tools:ignore="TouchTargetSizeCheck"/>
 
             <TextView
                 android:id="@+id/label_colour_week_plus"
@@ -465,12 +487,13 @@
             <EditText
                 android:id="@+id/edit_colour_week_plus"
                 android:layout_width="100dp"
-                android:layout_height="wrap_content"
+                android:layout_height="48dp"
+                android:autofillHints="@string/color_hint"
                 android:layout_marginTop="20dp"
-                android:autofillHints="Name of export file"
                 android:inputType="text"
                 android:textColor="@color/sub_content"
                 android:labelFor="@id/label_colour_week_plus"
+                android:hint="@string/color_hint"
                 app:layout_constraintBottom_toBottomOf="@id/label_colour_week_plus"
                 app:layout_constraintLeft_toLeftOf="@id/edit_colour_overdue"
                 app:layout_constraintRight_toRightOf="@id/edit_colour_overdue"
@@ -483,10 +506,11 @@
                 android:layout_height="36dp"
                 android:layout_marginBottom="5dp"
                 android:background="#dddddd"
-                style="@style/button_primary"
+                android:contentDescription="@string/settings_color_image"
                 app:layout_constraintBottom_toBottomOf="@id/edit_colour_week_plus"
                 app:layout_constraintLeft_toLeftOf="@id/button_colour_overdue"
-                app:layout_constraintRight_toRightOf="@id/button_colour_overdue"/>
+                app:layout_constraintRight_toRightOf="@id/button_colour_overdue"
+                tools:ignore="TouchTargetSizeCheck"/>
 
             <TextView
                 android:id="@+id/label_colour_conditional"
@@ -503,12 +527,13 @@
             <EditText
                 android:id="@+id/edit_colour_conditional"
                 android:layout_width="100dp"
-                android:layout_height="wrap_content"
+                android:layout_height="48dp"
+                android:autofillHints="@string/color_hint"
                 android:layout_marginTop="20dp"
-                android:autofillHints="Name of export file"
                 android:inputType="text"
                 android:textColor="@color/sub_content"
                 android:labelFor="@id/label_colour_conditional"
+                android:hint="@string/color_hint"
                 app:layout_constraintBottom_toBottomOf="@id/label_colour_conditional"
                 app:layout_constraintLeft_toLeftOf="@id/edit_colour_overdue"
                 app:layout_constraintRight_toRightOf="@id/edit_colour_overdue"
@@ -521,10 +546,11 @@
                 android:layout_height="36dp"
                 android:layout_marginBottom="5dp"
                 android:background="#dddddd"
-                style="@style/button_primary"
+                android:contentDescription="@string/settings_color_image"
                 app:layout_constraintBottom_toBottomOf="@id/edit_colour_conditional"
                 app:layout_constraintLeft_toLeftOf="@id/button_colour_overdue"
-                app:layout_constraintRight_toRightOf="@id/button_colour_overdue"/>
+                app:layout_constraintRight_toRightOf="@id/button_colour_overdue"
+                tools:ignore="TouchTargetSizeCheck"/>
 
             <TextView
                 android:id="@+id/label_colour_pending"
@@ -538,15 +564,17 @@
                 app:layout_constraintTop_toBottomOf="@id/label_colour_conditional"
                 app:layout_constraintLeft_toLeftOf="parent" />
 
+
             <EditText
                 android:id="@+id/edit_colour_pending"
                 android:layout_width="100dp"
-                android:layout_height="wrap_content"
+                android:layout_height="48dp"
+                android:autofillHints="@string/color_hint"
                 android:layout_marginTop="20dp"
-                android:autofillHints="Name of export file"
                 android:inputType="text"
                 android:textColor="@color/sub_content"
                 android:labelFor="@id/label_colour_pending"
+                android:hint="@string/color_hint"
                 app:layout_constraintBottom_toBottomOf="@id/label_colour_pending"
                 app:layout_constraintLeft_toLeftOf="@id/edit_colour_overdue"
                 app:layout_constraintRight_toRightOf="@id/edit_colour_overdue"
@@ -559,10 +587,52 @@
                 android:layout_height="36dp"
                 android:layout_marginBottom="5dp"
                 android:background="#dddddd"
-                style="@style/button_primary"
+                android:contentDescription="@string/settings_color_image"
                 app:layout_constraintBottom_toBottomOf="@id/edit_colour_pending"
                 app:layout_constraintLeft_toLeftOf="@id/button_colour_overdue"
-                app:layout_constraintRight_toRightOf="@id/button_colour_overdue"/>
+                app:layout_constraintRight_toRightOf="@id/button_colour_overdue"
+                tools:ignore="TouchTargetSizeCheck"/>
+
+            <TextView
+                android:id="@+id/label_colour_start_today"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:layout_marginTop="20dp"
+                android:gravity="center_vertical"
+                android:text="@string/colour_start_today_label"
+                android:textSize="16sp"
+                android:textColor="@color/sub_content"
+                app:layout_constraintTop_toBottomOf="@id/label_colour_pending"
+                app:layout_constraintLeft_toLeftOf="parent" />
+
+
+            <EditText
+                android:id="@+id/edit_colour_start_today"
+                android:layout_width="100dp"
+                android:layout_height="48dp"
+                android:autofillHints="@string/color_hint"
+                android:layout_marginTop="20dp"
+                android:inputType="text"
+                android:textColor="@color/sub_content"
+                android:labelFor="@id/label_colour_start_today"
+                android:hint="@string/color_hint"
+                app:layout_constraintBottom_toBottomOf="@id/label_colour_start_today"
+                app:layout_constraintLeft_toLeftOf="@id/edit_colour_overdue"
+                app:layout_constraintRight_toRightOf="@id/edit_colour_overdue"
+                tools:ignore="LabelFor" />
+
+
+            <android.widget.Button
+                android:id="@+id/button_colour_start_today"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginBottom="5dp"
+                android:background="#dddddd"
+                android:contentDescription="@string/settings_color_image"
+                app:layout_constraintBottom_toBottomOf="@id/edit_colour_start_today"
+                app:layout_constraintLeft_toLeftOf="@id/button_colour_overdue"
+                app:layout_constraintRight_toRightOf="@id/button_colour_overdue"
+                tools:ignore="TouchTargetSizeCheck"/>
 
             <TextView
                 android:id="@+id/label_colour_complete"
@@ -573,18 +643,19 @@
                 android:text="@string/colour_complete_label"
                 android:textSize="16sp"
                 android:textColor="@color/sub_content"
-                app:layout_constraintTop_toBottomOf="@id/label_colour_pending"
+                app:layout_constraintTop_toBottomOf="@id/label_colour_start_today"
                 app:layout_constraintLeft_toLeftOf="parent" />
 
             <EditText
                 android:id="@+id/edit_colour_complete"
                 android:layout_width="100dp"
-                android:layout_height="wrap_content"
+                android:layout_height="48dp"
+                android:autofillHints="@string/color_hint"
                 android:layout_marginTop="20dp"
-                android:autofillHints="Name of export file"
                 android:inputType="text"
                 android:textColor="@color/sub_content"
                 android:labelFor="@id/label_colour_complete"
+                android:hint="@string/color_hint"
                 app:layout_constraintBottom_toBottomOf="@id/label_colour_complete"
                 app:layout_constraintLeft_toLeftOf="@id/edit_colour_overdue"
                 app:layout_constraintRight_toRightOf="@id/edit_colour_overdue"
@@ -595,12 +666,14 @@
                 android:id="@+id/button_colour_complete"
                 android:layout_width="36dp"
                 android:layout_height="36dp"
+                android:autofillHints="@string/color_hint"
                 android:layout_marginBottom="5dp"
                 android:background="#dddddd"
-                style="@style/button_primary"
+                android:contentDescription="@string/settings_color_image"
                 app:layout_constraintBottom_toBottomOf="@id/edit_colour_complete"
                 app:layout_constraintLeft_toLeftOf="@id/button_colour_overdue"
-                app:layout_constraintRight_toRightOf="@id/button_colour_overdue"/>
+                app:layout_constraintRight_toRightOf="@id/button_colour_overdue"
+                tools:ignore="TouchTargetSizeCheck"/>
 
             <TextView
                 android:id="@+id/label_colour_timePB"
@@ -617,12 +690,13 @@
             <EditText
                 android:id="@+id/edit_colour_timePB"
                 android:layout_width="100dp"
-                android:layout_height="wrap_content"
+                android:layout_height="48dp"
+                android:autofillHints="@string/color_hint"
                 android:layout_marginTop="20dp"
-                android:autofillHints="Name of export file"
                 android:inputType="text"
                 android:textColor="@color/sub_content"
                 android:labelFor="@id/label_colour_complete"
+                android:hint="@string/color_hint"
                 app:layout_constraintBottom_toBottomOf="@id/label_colour_timePB"
                 app:layout_constraintLeft_toLeftOf="@id/edit_colour_overdue"
                 app:layout_constraintRight_toRightOf="@id/edit_colour_overdue"
@@ -635,10 +709,11 @@
                 android:layout_height="36dp"
                 android:layout_marginBottom="5dp"
                 android:background="#dddddd"
-                style="@style/button_primary"
+                android:contentDescription="@string/settings_color_image"
                 app:layout_constraintBottom_toBottomOf="@id/edit_colour_timePB"
                 app:layout_constraintLeft_toLeftOf="@id/button_colour_overdue"
-                app:layout_constraintRight_toRightOf="@id/button_colour_overdue"/>
+                app:layout_constraintRight_toRightOf="@id/button_colour_overdue"
+                tools:ignore="TouchTargetSizeCheck"/>
 
             <TextView
                 android:id="@+id/label_colour_checklistPB"
@@ -655,12 +730,13 @@
             <EditText
                 android:id="@+id/edit_colour_checklistPB"
                 android:layout_width="100dp"
-                android:layout_height="wrap_content"
+                android:layout_height="48dp"
+                android:autofillHints="@string/color_hint"
                 android:layout_marginTop="20dp"
-                android:autofillHints="Name of export file"
                 android:inputType="text"
                 android:textColor="@color/sub_content"
                 android:labelFor="@id/label_colour_complete"
+                android:hint="@string/color_hint"
                 app:layout_constraintBottom_toBottomOf="@id/label_colour_checklistPB"
                 app:layout_constraintLeft_toLeftOf="@id/edit_colour_overdue"
                 app:layout_constraintRight_toRightOf="@id/edit_colour_overdue"
@@ -672,10 +748,11 @@
                 android:layout_height="36dp"
                 android:layout_marginBottom="5dp"
                 android:background="#dddddd"
-                style="@style/button_primary"
+                android:contentDescription="@string/settings_color_image"
                 app:layout_constraintBottom_toBottomOf="@id/edit_colour_checklistPB"
                 app:layout_constraintLeft_toLeftOf="@id/button_colour_overdue"
-                app:layout_constraintRight_toRightOf="@id/button_colour_overdue"/>
+                app:layout_constraintRight_toRightOf="@id/button_colour_overdue"
+                tools:ignore="TouchTargetSizeCheck"/>
 
             <!--Save button for colors-->
             <android.widget.Button
@@ -718,7 +795,7 @@
 
             <RadioButton
                 android:id="@+id/radio_delete_never"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/sub_content"
                 android:text="@string/never"
@@ -740,7 +817,7 @@
             <EditText
                 android:id="@+id/edit_delete_after"
                 android:layout_width="50dp"
-                android:layout_height="wrap_content"
+                android:layout_height="48dp"
                 android:autofillHints="Repeat until clause"
                 android:inputType="number"
                 android:textColor="@color/sub_content"
