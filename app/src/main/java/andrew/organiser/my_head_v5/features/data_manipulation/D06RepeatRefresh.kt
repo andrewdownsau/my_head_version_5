@@ -23,22 +23,25 @@ class D06RepeatRefresh {
             for(task in taskList){
                 //println("Debug: ${task.getTaskModalAsString()}")
                 //Isolate tasks completed before today that have a repeat clause with a valid frequency
-                if(task.repeat && task.completedFlag && task.completedDate != todayDateStr && task.frequency != "None"){
-                    //Further isolate tasks where repeat after clause is not 0
-                    if(task.repeatClause.contains("Forever") || task.repeatClauseValue != "0"){
-                        //Determine if until clause has been met or not
-                        if(task.repeatClause.contains("Until")) {
+                if(task.repeatFlag && task.completedFlag && task.completedDate != todayDateStr){
+                    //Further isolate tasks where repeat clause is not forever
+                    if(task.repeatClause != "Forever"){
+                        //If AFTER clause, determine that repeats left is not 0
+                        if(task.repeatClause.contains("After_")){
+                            val repeatsLeft = task.repeatClause.split("_")[1].toInt()
+                            if(repeatsLeft != 0) refreshTasks(c, task, todayDate)
+                        }
+                        //If UNTIL clause, determine that date until has not been met yet
+                        if(task.repeatClause.contains("Until_")){
                             try{
-                                val untilDate = LocalDate.parse(task.repeatClauseValue, MainActivity.DATE_FORMAT)
-                                if(todayDate.isBefore(untilDate)){
-                                    refreshTasks(c, task, todayDate)
-                                }
-
-                            }catch(e: Exception){println("___Error: $e")}
+                                val repeatsUntil = LocalDate.parse(task.repeatClause.split("_")[1], MainActivity.DATE_FORMAT)
+                                if(todayDate.isBefore(repeatsUntil)) refreshTasks(c, task, todayDate)
+                            }
+                            catch(e: Exception){println("___Error: $e")}
                         }
-                        else{
-                            refreshTasks(c, task, todayDate)
-                        }
+                    }
+                    else{
+                        refreshTasks(c, task, todayDate)
                     }
                 }
             }
@@ -60,30 +63,30 @@ class D06RepeatRefresh {
             task.completedDate = ""
 
             //Add appropriate time amount based on repeat frequency to start and due date
-            if(task.frequency != null){
+            if(task.frequencyClause.isNotEmpty()){
                 var startDate = LocalDate.parse(task.startDate, MainActivity.DATE_FORMAT)
-                var dueDate = LocalDate.parse(task.dueDate, MainActivity.DATE_FORMAT)
+                var endDate = LocalDate.parse(task.endDate, MainActivity.DATE_FORMAT)
                 var numberOfShifts = 0
 
-                while(dueDate.isBefore(todayDate) || numberOfShifts == 0){
-                    startDate = addTimeToDate(task.frequency!!, startDate.format(MainActivity.DATE_FORMAT))
-                    dueDate = addTimeToDate(task.frequency!!, dueDate.format(MainActivity.DATE_FORMAT))
+                while(endDate.isBefore(todayDate) || numberOfShifts == 0){
+                    startDate = addTimeToDate(task.frequencyClause, startDate.format(MainActivity.DATE_FORMAT))
+                    endDate = addTimeToDate(task.frequencyClause, endDate.format(MainActivity.DATE_FORMAT))
                     numberOfShifts++
                 }
 
 
                 //Change any dates in checklist to update when repeat is triggered
                 val subtaskList = D05SubTaskList.read(task.id)
-                var earliestSubtaskDate = dueDate
+                var earliestSubtaskDate = endDate
                 for(subtask in subtaskList){
-                    if(subtask.dueDate.isNotEmpty()){
-                        var subtaskDate = LocalDate.parse(subtask.dueDate, MainActivity.DATE_FORMAT)
+                    if(subtask.endDate.isNotEmpty()){
+                        var subtaskDate = LocalDate.parse(subtask.endDate, MainActivity.DATE_FORMAT)
                         var tempNumberOfShifts = numberOfShifts
                         while(tempNumberOfShifts > 0) {
-                            subtaskDate = addTimeToDate(task.frequency!!, subtaskDate.format(MainActivity.DATE_FORMAT))
+                            subtaskDate = addTimeToDate(task.frequencyClause, subtaskDate.format(MainActivity.DATE_FORMAT))
                             tempNumberOfShifts--
                         }
-                        subtask.dueDate = subtaskDate.format(MainActivity.DATE_FORMAT)
+                        subtask.endDate = subtaskDate.format(MainActivity.DATE_FORMAT)
                         if(subtaskDate < earliestSubtaskDate) earliestSubtaskDate = subtaskDate
                     }
                     subtask.completedFlag = false
@@ -91,19 +94,22 @@ class D06RepeatRefresh {
 
                 //Set new dates for task and then update in table
                 task.startDate = startDate.format(MainActivity.DATE_FORMAT)
-                task.dueDate = dueDate.format(MainActivity.DATE_FORMAT)
-                task.checklistDate = earliestSubtaskDate.format(MainActivity.DATE_FORMAT)
+                task.endDate = endDate.format(MainActivity.DATE_FORMAT)
+                task.earliestEndDate = earliestSubtaskDate.format(MainActivity.DATE_FORMAT)
 
                 //Change remaining times to repeat the task if set to after times clause
                 try{
-                    if(task.repeatClause == "After")
-                        task.repeatClauseValue = (task.repeatClauseValue.toInt() - 1).toString()
+                    if(task.repeatClause.contains("After_")){
+                        var repeatsLeft = task.repeatClause.split("_")[1].toInt()
+                        repeatsLeft--
+                        task.repeatClause = "After_${repeatsLeft}"
+                    }
                 }catch(_:Exception){}
 
                 //Update the task in the database
                 if(D04TaskList.save(c, task, task.name)){
                     D04TaskList.updateConditionStatuses(c, task.id, task.completedFlag, false)
-                    D05SubTaskList.save(c, subtaskList, task.id)
+                    D05SubTaskList.save(c, subtaskList, task.id, false)
                 }
             }
         }

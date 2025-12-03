@@ -33,7 +33,7 @@ class Gen07TaskAddEditPopulation {
                 taskContextName = D03ContextList.nameFromId(taskObject.contextId)
 
                 //Use task object to set any frequency or condition value
-                if(!taskObject.frequency.isNullOrEmpty() && taskObject.frequency!!.contains("_")) taskFrequency = taskObject.frequency!!.split("_")[1]
+                if(taskObject.frequencyClause.isNotEmpty() && taskObject.frequencyClause.contains("_")) taskFrequency = taskObject.frequencyClause.split("_")[1]
             }
 
             println("=== Gen07 - Task Add Edit Population for Task with context: $taskContextName ===")
@@ -59,7 +59,7 @@ class Gen07TaskAddEditPopulation {
 
         private fun extractGlobalLists(taskObject: TaskObject?, contextName: String?){
             //Extract context list
-            val tempConditionId = taskObject?.conditionId ?: 0
+            val tempConditionId = taskObject?.conditionIdRef ?: 0
             var tempContextId = taskObject?.contextId ?: 0
             val contextListRead = D03ContextList.read()
             if(contextListRead.isNotEmpty()){

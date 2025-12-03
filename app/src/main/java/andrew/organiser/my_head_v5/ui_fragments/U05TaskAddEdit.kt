@@ -23,6 +23,7 @@ import android.view.ViewGroup
 import android.widget.Spinner
 import android.widget.ToggleButton
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.bundleOf
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
@@ -105,9 +106,9 @@ class U05TaskAddEdit : Fragment() {
 
         //Set date and time listeners by an array of edit text views
         val dateEditTextList: ArrayList<View> = arrayListOf(
-            binding.editStartDate, binding.editEndDate, binding.editCompletedDate, binding.editRepeatUntil)
+            binding.editStartTime, binding.editEndTime, binding.editStartDate, binding.editEndDate, binding.editCompletedDate, binding.editRepeatUntil)
         Gen06TaskAddEditListeners.main(fragmentContext, activity, "setDateListeners", dateEditTextList, null)
-        val timeEditTextList: ArrayList<View> = arrayListOf(binding.editStartTime, binding.editEndTime)
+        val timeEditTextList: ArrayList<View> = arrayListOf(binding.editStartTime, binding.editEndTime, binding.editStartDate, binding.editEndDate)
         Gen06TaskAddEditListeners.main(fragmentContext, activity, "setTimeListeners", timeEditTextList, null)
 
         //Set checkbox listeners
@@ -131,6 +132,9 @@ class U05TaskAddEdit : Fragment() {
 
         if(binding.checklistLayout.visibility == View.VISIBLE)
             Gen06TaskAddEditListeners.main(fragmentContext, activity, "setChecklistFlag", arrayListOf(binding.checklistCheck, binding.subtaskLayout, binding.subtaskScrollView), taskObjectId)
+
+        //Condition spinner listener
+        Gen06TaskAddEditListeners.main(fragmentContext, null, "setConditionListener", arrayListOf(binding.conditionSpinner, binding.changeStartCheckLayout), null)
 
         //Populate spinners and other widgets
         if(!editMode){
@@ -198,22 +202,37 @@ class U05TaskAddEdit : Fragment() {
                 binding.seekbarMotivation.progress = taskObject.motivation
                 binding.editStartDate.setText(taskObject.startDate)
                 binding.editStartTime.setText(taskObject.startTime)
-                binding.editEndDate.setText(taskObject.dueDate)
-                binding.editEndTime.setText(taskObject.dueTime)
+                binding.editEndDate.setText(taskObject.endDate)
+                binding.editEndTime.setText(taskObject.endTime)
                 binding.completedCheck.isChecked = taskObject.completedFlag
                 if (taskObject.completedDate != "") binding.editCompletedDate.setText(taskObject.completedDate)
-                binding.repeatCheck.isChecked = taskObject.repeat
-                if (taskObject.frequency != null && taskObject.frequency!!.contains("_")) {
+                binding.repeatCheck.isChecked = taskObject.repeatFlag
+                binding.changeStartCheck.isChecked = taskObject.changeStartFlag == true
+
+                //Set the frequency values based on the full clause string
+                if (taskObject.frequencyClause.contains("_")) {
                     binding.radioRepeatOther.isChecked = true
-                    binding.editRepeatEvery.setText(taskObject.frequency!!.split("_")[0])
+                    binding.editRepeatEvery.setText(taskObject.frequencyClause.split("_")[0])
                 }
-                if (taskObject.frequency != null && taskObject.frequency!!.contains("Days:")) setRepeatDays(taskObject.frequency!!)
-                binding.radioRepeatForever.isChecked = taskObject.repeatClause.contains("Forever") || (!taskObject.repeatClause .contains("Until") && !taskObject.repeatClause.contains("After"))
-                binding.radioRepeatUntil.isChecked = taskObject.repeatClause.contains("Until")
-                if (binding.radioRepeatUntil.isChecked) binding.editRepeatUntil.setText(taskObject.repeatClauseValue)
-                binding.radioRepeatAfter.isChecked = taskObject.repeatClause.contains("After")
-                if (binding.radioRepeatAfter.isChecked) binding.editRepeatAfter.setText(taskObject.repeatClauseValue)
-                binding.checklistCheck.isChecked = taskObject.checklist
+                if (taskObject.frequencyClause.contains("Days:")) setRepeatDays(taskObject.frequencyClause)
+
+                //Set the repeat values based on the full clause string
+                with(taskObject.repeatClause) {
+                    when {
+                        contains("Until_") -> {
+                            binding.radioRepeatUntil.isChecked = true
+                            binding.editRepeatUntil.setText(taskObject.repeatClause.split("_")[1])
+                        }
+                        contains("After_") -> {
+                            binding.radioRepeatAfter.isChecked = true
+                            binding.editRepeatAfter.setText(taskObject.repeatClause.split("_")[1])
+                        }
+                        else -> binding.radioRepeatForever.isChecked = true
+                    }
+                }
+
+                binding.checklistCheck.isChecked = taskObject.checklistFlag
+                binding.changeStartCheckLayout.visibility = if(taskObject.conditionActiveFlag != null) View.VISIBLE else View.GONE
                 binding.editNotes.setText(taskObject.notes)
 
             }catch (e: Exception){
@@ -235,13 +254,13 @@ class U05TaskAddEdit : Fragment() {
     private fun getRepeatClause():String{
         return if(!binding.repeatCheck.isChecked) ""
         else if(binding.radioRepeatForever.isChecked) "Forever"
-        else if(binding.radioRepeatUntil.isChecked) "Until"
-        else if(binding.radioRepeatAfter.isChecked)  "After"
+        else if(binding.radioRepeatUntil.isChecked) "Until_${binding.editRepeatUntil.text}"
+        else if(binding.radioRepeatAfter.isChecked)  "After_${binding.editRepeatAfter.text.toString()}"
         else ""
     }
 
-    private fun getRepeatFrequencyValue():String?{
-        var repeatFrequency:String? = null
+    private fun getRepeatFrequencyValue():String{
+        var repeatFrequency = ""
         if(binding.repeatCheck.isChecked) {
             if(binding.radioRepeatOther.isChecked){
                 repeatFrequency = "${binding.editRepeatEvery.text}_${binding.frequencySpinner.selectedItem}"
@@ -263,25 +282,22 @@ class U05TaskAddEdit : Fragment() {
         return repeatFrequency
     }
 
-    private fun getRepeatClauseValue():String{
-        return if(binding.radioRepeatUntil.isChecked) binding.editRepeatUntil.text.toString()
-        else if(binding.radioRepeatAfter.isChecked) binding.editRepeatAfter.text.toString()
-        else ""
-    }
-
     private fun validateTaskSave(): Boolean{
         //Check character limit and date and repeat clause before saving
         var warningVisible = true
         if(binding.editTaskName.text.toString().length in 1..59){
             if(D04TaskList.validateDate(binding.editStartDate, binding.editEndDate)) {
-                if(binding.repeatCheck.isChecked){
-                    if(binding.radioRepeatDay.isChecked && getRepeatFrequencyValue() == "Days:") binding.labelWarning.text = getString(R.string.repeat_frequency_warning)
-                    else if(binding.radioRepeatOther.isChecked && binding.editRepeatEvery.text.isEmpty()) binding.labelWarning.text = getString(R.string.repeat_frequency_warning)
-                    else if(binding.radioRepeatAfter.isChecked && binding.editRepeatAfter.text.isEmpty()) binding.labelWarning.text = getString(R.string.repeat_after_warning)
-                    else if(binding.radioRepeatUntil.isChecked && binding.editRepeatUntil.text.isEmpty()) binding.labelWarning.text = getString(R.string.repeat_until_warning)
-                    else warningVisible = false
+                if(D04TaskList.validateTime(binding.editStartTime, binding.editEndTime, binding.editStartDate, binding.editEndDate)){
+                    if(binding.repeatCheck.isChecked){
+                        if(binding.radioRepeatDay.isChecked && getRepeatFrequencyValue() == "Days:") binding.labelWarning.text = getString(R.string.repeat_frequency_warning)
+                        else if(binding.radioRepeatOther.isChecked && binding.editRepeatEvery.text.isEmpty()) binding.labelWarning.text = getString(R.string.repeat_frequency_warning)
+                        else if(binding.radioRepeatAfter.isChecked && binding.editRepeatAfter.text.isEmpty()) binding.labelWarning.text = getString(R.string.repeat_after_warning)
+                        else if(binding.radioRepeatUntil.isChecked && binding.editRepeatUntil.text.isEmpty()) binding.labelWarning.text = getString(R.string.repeat_until_warning)
+                        else warningVisible = false
+                    }
+                    else{ warningVisible = false }
                 }
-                else{ warningVisible = false }
+                else binding.labelWarning.text = getString(R.string.time_warning)
             }
             else binding.labelWarning.text = getString(R.string.date_warning)
         }
@@ -295,10 +311,14 @@ class U05TaskAddEdit : Fragment() {
     private fun saveTask(c: Context, taskOriginalName:String?, taskId: Int) {
         //Get the context id value for the spinner selection made
         val contextId = D03ContextList.idFromName(binding.contextSpinner.selectedItem.toString())
-        var conditionId: Int? = D04TaskList.getIdFromName(binding.conditionSpinner.selectedItem.toString())
-        if(conditionId == 0) conditionId = null
-        var conditionStatus:Boolean? = null
-        if(conditionId != null){ conditionStatus = !D04TaskList.getCompleteFlag(conditionId) }
+        var conditionIdRef: Int? = D04TaskList.getIdFromName(binding.conditionSpinner.selectedItem.toString())
+        if(conditionIdRef == 0) conditionIdRef = null
+        var changeStartFlag:Boolean? = null
+        var conditionActiveFlag:Boolean? = null
+        if(conditionIdRef != null){
+            changeStartFlag = binding.changeStartCheck.isChecked
+            conditionActiveFlag = !D04TaskList.getCompleteFlag(conditionIdRef)
+        }
 
         //Create new task modal based on UI inputs
         val newTask = TaskObject(
@@ -306,16 +326,16 @@ class U05TaskAddEdit : Fragment() {
             binding.seekbarComplexity.progress, binding.seekbarMotivation.progress, binding.editStartDate.text.toString(),
             binding.editStartTime.text.toString(), binding.editEndDate.text.toString(), binding.editEndTime.text.toString(), binding.checklistCheck.isChecked,
             Gen09SubTaskUIList.getEarliestChecklistDate(binding.subtaskLayout, binding.editEndDate),
-            binding.repeatCheck.isChecked, getRepeatClause(), getRepeatClauseValue(), getRepeatFrequencyValue(), conditionId, conditionStatus,
+            binding.repeatCheck.isChecked, getRepeatClause(), getRepeatFrequencyValue(), conditionIdRef, changeStartFlag , conditionActiveFlag,
             binding.editNotes.text.toString(), binding.completedCheck.isChecked, binding.editCompletedDate.text.toString())
 
         if(D04TaskList.save(c, newTask, taskOriginalName)){
             //Update condition status to match completed flag
-            D04TaskList.updateConditionStatuses(c, taskId, newTask.completedFlag, !newTask.repeat)
+            D04TaskList.updateConditionStatuses(c, taskId, newTask.completedFlag, !newTask.repeatFlag)
 
             //Update subtask list with all available info and save into database
             val updatedSubtaskList = Gen09SubTaskUIList.getSaveSubtaskList(binding.subtaskLayout, taskId)
-            if(D05SubTaskList.save(c, updatedSubtaskList, taskId))
+            if(D05SubTaskList.save(c, updatedSubtaskList, taskId, true))
                 D05SubTaskList.initialise(c)
 
             //Initialise repeat refresh if task has been completed at an earlier date

@@ -22,13 +22,28 @@ class U04TaskList : Fragment() {
     // This property is only valid between onCreateView and onDestroyView.
     private val binding get() = _binding!!
     private var dbHandler: DBHandler? = null
+    private var taskListTypeActive:Boolean = true
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         println("--- Task List: onCreateView ---")
         (activity as? SettingsButtonStateManager)?.setVisible("Task_List")
         _binding = TaskListBinding.inflate(inflater, container, false)
-        return binding.root
+        onSaveInstanceState(bundleOf())
 
+        return binding.root
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putBoolean("taskListTypeActive", taskListTypeActive)
+    }
+
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        println("--- Task List: onViewStateRestored ---")
+        super.onViewStateRestored(savedInstanceState)
+        if(savedInstanceState?.getBoolean("taskListTypeActive") != null && savedInstanceState.containsKey("taskListTypeActive")){
+            taskListTypeActive = savedInstanceState.getBoolean("taskListTypeActive")
+        }
     }
 
     override fun onStart() {
@@ -43,59 +58,41 @@ class U04TaskList : Fragment() {
         //Extract context bundle values from parent bundle
         val contextId = arguments?.getInt("contextId")
         val contextName = arguments?.getString("contextName")
-        if (contextId != null && contextName != null) {
-            //Set actionbar title to context name
-            (activity as AppCompatActivity).supportActionBar?.title = "$contextName Tasks"
 
-            //Check task file, create list if items exist
-            Gen04TaskUIList.main(c, this, binding.taskListLayout, binding.subtitleTaskText, "Context_Active", contextId)
+        //Set filter key and title based on task list type and bundle
+        var filterKey = if(contextId != null && contextName != null) "Context" else "Master"
+        filterKey += if(taskListTypeActive) "_Active" else "_Archive"
+        val listTitle = if(contextId != null && contextName != null) "$contextName Tasks" else "Master Task List"
 
-            //Navigate to add edit fragment using plus button
-            val contextBundle = bundleOf("contextName" to contextName)
-            binding.fabTaskAdd.setOnClickListener {
-                findNavController().navigate(R.id.action_TaskList_to_TaskAddEdit, contextBundle)
-            }
+        //Set actionbar title to context name
+        (activity as AppCompatActivity).supportActionBar?.title = listTitle
 
-            //Navigate to archive using 2nd fab
-            binding.fabTaskArchive.setOnClickListener {
-                Gen04TaskUIList.main(c, this, binding.taskListLayout, binding.subtitleTaskText, "Context_Archive", contextId)
-                binding.fabTaskArchive.visibility = View.GONE
-                binding.fabTaskReturn.visibility = View.VISIBLE
-            }
+        //Check task file, create list if items exist
+        Gen04TaskUIList.main(c, this, binding.taskListLayout, binding.subtitleTaskText, filterKey, contextId)
+        setFabInputs()
 
-            //Navigate back to normal task list with return
-            binding.fabTaskReturn.setOnClickListener {
-                Gen04TaskUIList.main(c, this, binding.taskListLayout, binding.subtitleTaskText, "Context_Active", contextId)
-                binding.fabTaskReturn.visibility = View.GONE
-                binding.fabTaskArchive.visibility = View.VISIBLE
-            }
+        //Navigate to add edit fragment using plus button
+        val navigationBundle = bundleOf()
+        if(contextId != null && contextName != null) navigationBundle.putString("contextName", contextName)
+        binding.fabTaskAdd.setOnClickListener {
+            onSaveInstanceState(bundleOf("taskListTypeActive" to taskListTypeActive))
+            findNavController().navigate(R.id.action_TaskList_to_TaskAddEdit, navigationBundle)
         }
-        //Else this is the master task list that contains all the non-completed tasks
-        else{
-            //Set actionbar title to master task list
-            (activity as AppCompatActivity).supportActionBar?.title = "Master Task List"
 
-            //Check task file, create list if items exist
-            Gen04TaskUIList.main(c, this, binding.taskListLayout, binding.subtitleTaskText, "Master_Active", contextId)
+        //Navigate to archive using 2nd fab
+        binding.fabTaskArchive.setOnClickListener {
+            taskListTypeActive = false
+            filterKey = filterKey.split("_")[0] + "_Archive"
+            Gen04TaskUIList.main(c, this, binding.taskListLayout, binding.subtitleTaskText, filterKey, contextId)
+            setFabInputs()
+        }
 
-            //Navigate to add edit fragment using plus button
-            binding.fabTaskAdd.setOnClickListener {
-                findNavController().navigate(R.id.action_TaskList_to_TaskAddEdit)
-            }
-
-            //Navigate to archive using 2nd fab
-            binding.fabTaskArchive.setOnClickListener {
-                Gen04TaskUIList.main(c, this, binding.taskListLayout, binding.subtitleTaskText, "Master_Archive", contextId)
-                binding.fabTaskArchive.visibility = View.GONE
-                binding.fabTaskReturn.visibility = View.VISIBLE
-            }
-
-            //Navigate back to normal task list with return
-            binding.fabTaskReturn.setOnClickListener {
-                Gen04TaskUIList.main(c, this, binding.taskListLayout, binding.subtitleTaskText, "Master_Active", contextId)
-                binding.fabTaskReturn.visibility = View.GONE
-                binding.fabTaskArchive.visibility = View.VISIBLE
-            }
+        //Navigate back to normal task list with return
+        binding.fabTaskReturn.setOnClickListener {
+            taskListTypeActive = true
+            filterKey = filterKey.split("_")[0] + "_Active"
+            Gen04TaskUIList.main(c, this, binding.taskListLayout, binding.subtitleTaskText, filterKey, contextId)
+            setFabInputs()
         }
     }
 
@@ -103,5 +100,11 @@ class U04TaskList : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun setFabInputs(){
+        binding.fabTaskReturn.visibility = if(taskListTypeActive) View.GONE else View.VISIBLE
+        binding.fabTaskArchive.visibility = if(taskListTypeActive) View.VISIBLE else View.GONE
+        binding.fabTaskAdd.visibility = if(taskListTypeActive) View.VISIBLE else View.GONE
     }
 }

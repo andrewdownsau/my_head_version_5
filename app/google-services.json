@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "450874097577",
+    "project_id": "annon-organiser-my-head",
+    "storage_bucket": "annon-organiser-my-head.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:450874097577:android:88c6f38ec31f5bdd8aceb8",
+        "android_client_info": {
+          "package_name": "andrew.organiser.my_head_v5"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAjfxD3Vfl3-foh-vsbDQKPRqf-A2HuUZo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

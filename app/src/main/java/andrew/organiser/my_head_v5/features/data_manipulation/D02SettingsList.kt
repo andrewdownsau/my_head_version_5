@@ -2,15 +2,6 @@ package andrew.organiser.my_head_v5.features.data_manipulation
 
 
 import andrew.organiser.my_head_v5.DBHandler
-import andrew.organiser.my_head_v5.DBHandler.Companion.DEFAULT_SETTING_ARCHIVE
-import andrew.organiser.my_head_v5.DBHandler.Companion.DEFAULT_SETTING_COLORS
-import andrew.organiser.my_head_v5.DBHandler.Companion.DEFAULT_SETTING_FEATURES
-import andrew.organiser.my_head_v5.DBHandler.Companion.DEFAULT_SETTING_SORT
-import andrew.organiser.my_head_v5.DBHandler.Companion.SETTINGS_ARCHIVE_DELETE
-import andrew.organiser.my_head_v5.DBHandler.Companion.SETTINGS_TABLE_NAME
-import andrew.organiser.my_head_v5.DBHandler.Companion.SETTINGS_TASK_FEATURES
-import andrew.organiser.my_head_v5.DBHandler.Companion.SETTINGS_TASK_SORT_ORDER
-import andrew.organiser.my_head_v5.DBHandler.Companion.SETTINGS_UI_COLORS
 import andrew.organiser.my_head_v5.data_objects.SortOrderObject
 import android.content.ContentValues
 import android.content.Context
@@ -23,7 +14,7 @@ class D02SettingsList {
     companion object {
 
         // --- Global variables used throughout the active lifecycle of the application --- //
-        private val settingKeys = arrayOf(SETTINGS_TASK_FEATURES, SETTINGS_TASK_SORT_ORDER, SETTINGS_UI_COLORS, SETTINGS_ARCHIVE_DELETE)
+        private val settingKeys = arrayOf(DBHandler.TASK_FEATURES, DBHandler.TASK_SORT_ORDER, DBHandler.UI_COLORS, DBHandler.ARCHIVE_DELETE)
         private var settingsList: MutableMap<String, String> = mutableMapOf()
         private var taskFeatureList: MutableMap<String, Boolean> = mutableMapOf()
         private var taskSortList: ArrayList<SortOrderObject> = ArrayList()
@@ -36,7 +27,7 @@ class D02SettingsList {
             if(settingsList.isEmpty() || settingsChanged){
                 println("=== D02 - Initial read of all Settings ===")
                 settingsList.clear(); taskFeatureList.clear(); taskSortList.clear(); uiColorList.clear()
-                val rawSettingsList = DBHandler(c).readDBTable(SETTINGS_TABLE_NAME)
+                val rawSettingsList = DBHandler(c).readDBTable(DBHandler.SETTINGS_TABLE)
                 if(rawSettingsList.isNotEmpty()){
                     val extractedSettings = rawSettingsList[0].split("\t")
                     for(settingKey in settingKeys.withIndex()){
@@ -46,7 +37,7 @@ class D02SettingsList {
                                 settingsList[settingKey.value] = setting
 
                                 //Adding all task feature settings
-                                if(settingKey.value == SETTINGS_TASK_FEATURES){
+                                if(settingKey.value == DBHandler.TASK_FEATURES){
                                     for(taskFeature in setting.split(",")){
                                         val featureKey = taskFeature.split(":")[0]
                                         val featureValue = taskFeature.split(":")[1].toBoolean()
@@ -55,7 +46,7 @@ class D02SettingsList {
                                     }
                                 }
                                 //Adding all task sort settings
-                                if(settingKey.value == SETTINGS_TASK_SORT_ORDER){
+                                if(settingKey.value == DBHandler.TASK_SORT_ORDER){
                                     for(taskSort in setting.split(",")){
                                         val sortIndex = taskSort.split("_")[1].toInt()
                                         val sortName = taskSort.split(":")[0]
@@ -64,13 +55,13 @@ class D02SettingsList {
                                     }
                                 }
                                 //Adding all UI color settings
-                                if(settingKey.value == SETTINGS_UI_COLORS){
+                                if(settingKey.value == DBHandler.UI_COLORS){
                                     for(uiColor in setting.split(",")){
                                         uiColorList[uiColor.split(":")[0]] = uiColor.split(":")[1]
                                     }
                                 }
                                 //Adding archive delete settings
-                                if(settingKey.value == SETTINGS_ARCHIVE_DELETE){ archiveDelSetting = setting }
+                                if(settingKey.value == DBHandler.ARCHIVE_DELETE){ archiveDelSetting = setting }
                             }
                         }
                     }
@@ -89,7 +80,7 @@ class D02SettingsList {
                 newFeaturesStr += "${feature.key}:${feature.value},"
             }
             newFeaturesStr = newFeaturesStr.dropLast(1)  //Remove final comma
-            val values = contentValuesOf(Pair(SETTINGS_TASK_FEATURES, newFeaturesStr))
+            val values = contentValuesOf(Pair(DBHandler.TASK_FEATURES, newFeaturesStr))
             return save(c, "Task Features", values)
         }
         fun getTaskFeatureStatus(featureKey: String): Boolean{ return taskFeatureList.getValue(featureKey) }
@@ -105,7 +96,7 @@ class D02SettingsList {
                 newSortStr += "${sortOrder.getModalAsString()},"
             }
             newSortStr = newSortStr.dropLast(1)  //Remove final comma
-            val values = contentValuesOf(Pair(SETTINGS_TASK_SORT_ORDER, newSortStr))
+            val values = contentValuesOf(Pair(DBHandler.TASK_SORT_ORDER, newSortStr))
             return save(c, "Sort Order", values)
         }
         fun getOrderTypeFromName(name: String): String{ return taskSortList.filter { it.name == name }[0].type }
@@ -120,7 +111,7 @@ class D02SettingsList {
                 newColorsStr += "${color.key}:${color.value},"
             }
             newColorsStr = newColorsStr.dropLast(1)  //Remove final comma
-            val values = contentValuesOf(Pair(SETTINGS_UI_COLORS, newColorsStr))
+            val values = contentValuesOf(Pair(DBHandler.UI_COLORS, newColorsStr))
             return save(c, "UI Colors", values)
         }
         fun getUIColor(colorKey: String): String{ return uiColorList.getValue(colorKey) }
@@ -129,7 +120,7 @@ class D02SettingsList {
         //Save new archive delete setting
         fun saveArchiveDelete(c: Context, archiveSetting: String ) : Boolean{
             println("Process: Saving Archive Delete Settings") //Process line
-            val values = contentValuesOf(Pair(SETTINGS_ARCHIVE_DELETE, archiveSetting))
+            val values = contentValuesOf(Pair(DBHandler.ARCHIVE_DELETE, archiveSetting))
             return save(c, "Archive Delete", values)
         }
         fun getArchiveDeleteSetting(): String {return archiveDelSetting}
@@ -137,15 +128,15 @@ class D02SettingsList {
         fun resetDefaultSettings(c: Context){
             println("=== Reset Default Settings ===")
             val values = contentValuesOf(
-                Pair(SETTINGS_TASK_FEATURES, DEFAULT_SETTING_FEATURES),
-                Pair(SETTINGS_TASK_SORT_ORDER, DEFAULT_SETTING_SORT),
-                Pair(SETTINGS_UI_COLORS, DEFAULT_SETTING_COLORS),
-                Pair(SETTINGS_ARCHIVE_DELETE, DEFAULT_SETTING_ARCHIVE))
+                Pair(DBHandler.TASK_FEATURES, DBHandler.DEFAULT_SETTING_FEATURES),
+                Pair(DBHandler.TASK_SORT_ORDER, DBHandler.DEFAULT_SETTING_SORT),
+                Pair(DBHandler.UI_COLORS, DBHandler.DEFAULT_SETTING_COLORS),
+                Pair(DBHandler.ARCHIVE_DELETE, DBHandler.DEFAULT_SETTING_ARCHIVE))
             save(c, "All", values)
         }
 
         private fun save(c: Context, type:String, values: ContentValues): Boolean{
-            if(!DBHandler(c).updateEntry(SETTINGS_TABLE_NAME, "", values)){
+            if(!DBHandler(c).updateEntry(DBHandler.SETTINGS_TABLE, "", values)){
                 Toast.makeText(c, "Updating $type settings did not succeed", Toast.LENGTH_SHORT).show()
             } else {
                 Toast.makeText(c, "$type settings saved", Toast.LENGTH_SHORT).show()

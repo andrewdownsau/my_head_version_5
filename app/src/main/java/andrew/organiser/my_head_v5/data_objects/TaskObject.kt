@@ -9,23 +9,23 @@ class TaskObject (
     var motivation: Int,
     var startDate: String,
     var startTime: String,
-    var dueDate: String,
-    var dueTime: String,
-    var checklist: Boolean,
-    var checklistDate: String,
-    var repeat: Boolean,
+    var endDate: String,
+    var endTime: String,
+    var checklistFlag: Boolean,
+    var earliestEndDate: String,
+    var repeatFlag: Boolean,
     var repeatClause: String,
-    var repeatClauseValue: String,
-    var frequency: String?,
-    var conditionId: Int?,
-    var conditionStatus: Boolean?,
+    var frequencyClause: String,
+    var conditionIdRef: Int?,
+    var changeStartFlag: Boolean?,
+    var conditionActiveFlag: Boolean?,
     var notes: String,
     var completedFlag: Boolean,
     var completedDate: String){
 
     fun getTaskModalAsString(): String{
-        return "[$id][$contextId] $name: $motive, $complexity, $motivation, $startDate, $startTime, $dueDate, $dueTime, $checklist, $checklistDate, $repeat, " +
-                "$repeatClause, $repeatClauseValue, $frequency, $conditionId, $conditionStatus, $notes, $completedFlag, $completedDate"
+        return "[$id][$contextId] $name: $motive, $complexity, $motivation, $startDate, $startTime, $endDate, $endTime, $checklistFlag, $earliestEndDate, $repeatFlag, " +
+                "$repeatClause, $frequencyClause, $conditionIdRef, $changeStartFlag, $conditionActiveFlag, $notes, $completedFlag, $completedDate"
     }
 }
 

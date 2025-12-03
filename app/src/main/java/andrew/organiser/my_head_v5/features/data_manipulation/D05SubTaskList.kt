@@ -2,11 +2,6 @@ package andrew.organiser.my_head_v5.features.data_manipulation
 
 
 import andrew.organiser.my_head_v5.DBHandler
-import andrew.organiser.my_head_v5.DBHandler.Companion.SUBTASK_COMPLETED_COL
-import andrew.organiser.my_head_v5.DBHandler.Companion.SUBTASK_DUE_DATE_COL
-import andrew.organiser.my_head_v5.DBHandler.Companion.SUBTASK_NAME_COL
-import andrew.organiser.my_head_v5.DBHandler.Companion.SUBTASK_TABLE_NAME
-import andrew.organiser.my_head_v5.DBHandler.Companion.SUBTASK_TASK_ID_COL
 import andrew.organiser.my_head_v5.data_objects.SubtaskObject
 import android.content.ContentValues
 import android.content.Context
@@ -26,9 +21,9 @@ class D05SubTaskList {
             if(subTaskList.isEmpty()  || subTaskListChanged){
                 println("=== D04 - Initial read of all Sub Tasks ===")
                 subTaskList.clear()
-                val rawTaskList = DBHandler(c).readDBTable(SUBTASK_TABLE_NAME)
-                if(rawTaskList.isNotEmpty()){
-                    for(subTaskLine in rawTaskList){
+                val rawSubTaskList = DBHandler(c).readDBTable(DBHandler.SUBTASK_TABLE)
+                if(rawSubTaskList.isNotEmpty()){
+                    for(subTaskLine in rawSubTaskList){
                         try{
                             //println("Debug: Adding Task String Line: $taskLine") //Debug line
                             val subTaskParams = subTaskLine.split("\t")
@@ -55,25 +50,42 @@ class D05SubTaskList {
         }
 
 
-        fun save(c: Context, newSubTaskList: ArrayList<SubtaskObject>, taskId: Int) : Boolean{
+        fun save(c: Context, newSubTaskList: ArrayList<SubtaskObject>, taskId: Int, purge: Boolean) : Boolean{
             println("__Saving Subtask List __")
             //Retrieve the task Id if this is a newly created task
             var tempTaskId = taskId
             if(tempTaskId == 0) tempTaskId = getLatestTaskId(c)
-            //Purge all sub tasks with correct task id if required
-            else {
-                subTaskListChanged = true
-                DBHandler(c).deleteEntry(SUBTASK_TABLE_NAME, "$SUBTASK_TASK_ID_COL=$tempTaskId", arrayOf())
-            }
 
-            println("__Update Subtask List for task [$taskId]__")
-            //Add all newly created subtasks
-            newSubTaskList.forEach { subtaskModal ->
-                val values = subTaskToValues(subtaskModal, tempTaskId)
-                if(!DBHandler(c).newEntry(SUBTASK_TABLE_NAME, values)) {
-                    Toast.makeText(c, "Create new subtask failed:\nSubtask must be unique", Toast.LENGTH_SHORT).show()
+            //Check to see if subtask list is any different from the database and any changes have been made
+            if(purge){
+                val tempOriginalSubTaskList: ArrayList<SubtaskObject> = ArrayList()
+                for(tempSubtask in subTaskList.filter { it.taskId == taskId }){
+                    tempSubtask.id = 0
+                    tempOriginalSubTaskList.add(tempSubtask)
                 }
-                else{ subTaskListChanged = true }
+                for(newSubtask in newSubTaskList.withIndex()){
+                    val newSubTaskStr = newSubtask.value.getSubTaskModalAsString()
+                    val origSubTaskStr = tempOriginalSubTaskList[newSubtask.index].getSubTaskModalAsString()
+                    //println("___ New Subtask: $newSubTaskStr")
+                    //println("___ Original Subtask: $origSubTaskStr")
+                    if(newSubTaskStr != origSubTaskStr) {
+                        subTaskListChanged = true
+                        break
+                    }
+                }
+                if(subTaskListChanged){
+                    DBHandler(c).deleteEntry(DBHandler.SUBTASK_TABLE, "${DBHandler.TASK_ID_COL}=$tempTaskId", arrayOf())
+
+                    println("__Update Subtask List for task [$taskId]__")
+                    //Add all newly created subtasks
+                    newSubTaskList.forEach { subtaskModal ->
+                        val values = subTaskToValues(subtaskModal, tempTaskId)
+                        if(!DBHandler(c).newEntry(DBHandler.SUBTASK_TABLE, values)) {
+                            Toast.makeText(c, "Create new subtask failed:\nSubtask must be unique", Toast.LENGTH_SHORT).show()
+                        }
+                        else{ subTaskListChanged = true }
+                    }
+                }
             }
 
             return subTaskListChanged
@@ -92,10 +104,10 @@ class D05SubTaskList {
         private fun subTaskToValues(subTaskObject: SubtaskObject, taskId: Int):ContentValues{
             println("Process: Converting subtask: ${subTaskObject.getSubTaskModalAsString()}") //Process line
             val values = ContentValues()
-            values.put(SUBTASK_TASK_ID_COL, taskId)
-            values.put(SUBTASK_NAME_COL, subTaskObject.name)
-            values.put(SUBTASK_DUE_DATE_COL, subTaskObject.dueDate)
-            values.put(SUBTASK_COMPLETED_COL, subTaskObject.completedFlag)
+            values.put(DBHandler.TASK_ID_COL, taskId)
+            values.put(DBHandler.NAME_COL, subTaskObject.name)
+            values.put(DBHandler.SUB_END_DATE_COL, subTaskObject.endDate)
+            values.put(DBHandler.COMPLETED_FLAG_COL, subTaskObject.completedFlag)
 
             return values
         }

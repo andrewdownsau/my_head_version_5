@@ -6,6 +6,5 @@
     android:gravity="center"
     android:background="@drawable/default_border"
     android:textColor="#000000"
-    android:text="@string/context_type"
     android:paddingBottom="5dp"
     android:paddingTop="5dp"/>

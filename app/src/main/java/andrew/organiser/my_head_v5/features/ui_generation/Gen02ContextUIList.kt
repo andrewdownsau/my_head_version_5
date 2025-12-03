@@ -38,7 +38,7 @@ class Gen02ContextUIList {
             Gen05UIButtonColorAssign.main(c, "ContextColorAssign", null, contextId, dynamicButtonLayout)
 
             //Set on long click listener to trigger edit page function for non-tasks
-            val contextBundle = bundleOf("contextId" to contextId, "contextName" to contextName)
+            val contextBundle = bundleOf("contextId" to contextId, "contextName" to contextName, "taskListTypeActive" to true)
             val dynamicButton = dynamicButtonLayout.getChildAt(0) as Button
             dynamicButton.setOnLongClickListener {
                 findNavController(f).navigate(R.id.action_ContextList_to_ContextAddEdit, contextBundle)

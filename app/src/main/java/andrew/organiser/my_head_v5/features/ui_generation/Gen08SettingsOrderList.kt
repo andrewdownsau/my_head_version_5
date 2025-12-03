@@ -67,7 +67,7 @@ class Gen08SettingsOrderList {
         private fun getOrderListSorted() : ArrayList<SortOrderObject>{
             println("Process: Get Order List Sorted") //Process line
             //Filtered list contains only the default task properties and any features that have been set to true
-            val filteredList = globalSortOrderList.filter { it.name.contains("Due Date")} as ArrayList<SortOrderObject>
+            val filteredList = globalSortOrderList.filter { it.name.contains("End Date")} as ArrayList<SortOrderObject>
 
             for(feature in D02SettingsList.getFullFeatureList()){
                 if(feature.value && (feature.key == "Motivation" || feature.key == "Complexity")){

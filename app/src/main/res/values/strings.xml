@@ -30,6 +30,7 @@
     <string name="repeat_until">Task repeats:</string>
     <string name="date_hint">Date</string>
     <string name="time_hint">Time</string>
+    <string name="connect_start_date_to_condition">Connect the start date to condition:</string>
     <string name="feature_motivation_label">Motivation Rating:</string>
     <string name="feature_complexity_label">Complexity Rating:</string>
     <string name="feature_checklist_label">Checklist and Sub-tasks:</string>
@@ -55,7 +56,8 @@
     <string name="context_warning">No contexts listed.\nPlease add context.</string>
     <string name="task_warning">No tasks listed.\nPlease add task.</string>
     <string name="character_warning">Name must be 1 – 59 characters long</string>
-    <string name="date_warning">Start date must not be before due date</string>
+    <string name="date_warning">Start date must not be before end date</string>
+    <string name="time_warning">Start time must not be before end time if start and end dates are equal</string>
     <string name="repeat_frequency_warning">Please set frequency for repeat option</string>
     <string name="repeat_after_warning">Please input number of repeats for \"After\" clause</string>
     <string name="repeat_until_warning">Please input date for \"Until\" clause</string>
@@ -96,6 +98,8 @@
     <string name="Friday">F</string>
     <string name="Saturday">Sa</string>
     <string name="Sunday">Su</string>
+    <string name="Default_Start">9:00 AM</string>
+    <string name="Default_End">5:00 PM</string>
 
     <!--Help Topic Titles -->
     <string name="help_general_intro"><u>General Intro to App</u></string>

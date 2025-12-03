@@ -4,11 +4,11 @@ class SubtaskObject (
     var id: Int,
     var taskId: Int,
     var name: String,
-    var dueDate: String,
+    var endDate: String,
     var completedFlag: Boolean){
 
     fun getSubTaskModalAsString(): String{
-        return "[$id][$taskId] $name: $dueDate, $completedFlag"
+        return "[$id][$taskId] $name: $endDate, $completedFlag"
     }
 
 }

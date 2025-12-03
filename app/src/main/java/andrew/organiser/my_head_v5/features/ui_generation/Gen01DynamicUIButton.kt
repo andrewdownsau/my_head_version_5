@@ -31,7 +31,7 @@ class Gen01DynamicUIButton {
         private val separatorColor = Color.parseColor("#22000000")
 
         // --- Generate Dynamic UI Buttons --- //
-        fun createUIButtonLayout(c: Context, layout: ConstraintLayout, btnText : String, topId: Int, taskObject: TaskObject?) : ConstraintLayout{
+        fun createUIButtonLayout(c: Context, btnText : String, topId: Int, taskObject: TaskObject?) : ConstraintLayout{
             println("=== Gen01 - Create UI Button Layout: $btnText ===")
             //Create the overall UI layout containing the button and add the formatted button
             val dynamicButtonLayout = setDefaultButtonLayoutParams(ConstraintLayout(c))
@@ -49,13 +49,14 @@ class Gen01DynamicUIButton {
 
                 //Assign checklist progress bar if feature is activated
                 var checklistProgressBar: ProgressBar? = null
-                if(D02SettingsList.getTaskFeatureStatus("ChecklistProgress") && taskObject.checklist){
+                if(D02SettingsList.getTaskFeatureStatus("ChecklistProgress") && taskObject.checklistFlag){
                     checklistProgressBar = createGenericProgressBar(c)
                     checklistProgressBar = createChecklistProgressBar(checklistProgressBar, taskObject)
                 }
-                if(!taskObject.completedFlag && (timeProgressBar != null || checklistProgressBar != null))
-                    setButtonAndProgressBarsToLayout(dynamicButtonLayout, timeProgressBar, checklistProgressBar, taskObject.conditionStatus)
-
+                if(!taskObject.completedFlag && (timeProgressBar != null || checklistProgressBar != null)){
+                    val conditionActive = (D02SettingsList.getTaskFeatureStatus("Conditions") && taskObject.conditionActiveFlag == true)
+                    setButtonAndProgressBarsToLayout(dynamicButtonLayout, timeProgressBar, checklistProgressBar, conditionActive)
+                }
             }
 
             setButtonLayoutToList(layout, dynamicButtonLayout, topId)
@@ -119,15 +120,15 @@ class Gen01DynamicUIButton {
 
             //Set progress of bar based on task start and end dates/times provided
             val startDate = LocalDate.parse(taskObject.startDate, MainActivity.DATE_FORMAT)
-            val dueDate = LocalDate.parse(taskObject.dueDate, MainActivity.DATE_FORMAT)
-            val taskTimeSet = taskObject.startTime.isNotEmpty() && taskObject.dueTime.isNotEmpty()
-            val taskDayRange = Duration.between(startDate.atStartOfDay(), dueDate.atStartOfDay()).toDays() + 1
-            var taskHourRange = Duration.between(startDate.atStartOfDay(), dueDate.atStartOfDay()).toHours()
+            val endDate = LocalDate.parse(taskObject.endDate, MainActivity.DATE_FORMAT)
+            val taskTimeSet = taskObject.startTime.isNotEmpty() && taskObject.endTime.isNotEmpty()
+            val taskDayRange = Duration.between(startDate.atStartOfDay(), endDate.atStartOfDay()).toDays() + 1
+            var taskHourRange = Duration.between(startDate.atStartOfDay(), endDate.atStartOfDay()).toHours()
             var currentHourPeriod = Duration.between(startDate.atStartOfDay(), LocalDate.now().atStartOfDay()).toHours()
             if(taskTimeSet){
                 val startTime = LocalTime.parse(taskObject.startTime, MainActivity.TIME_FORMAT)
-                val dueTime = LocalTime.parse(taskObject.dueTime, MainActivity.TIME_FORMAT)
-                taskHourRange = Duration.between(startDate.atTime(startTime), dueDate.atTime(dueTime)).toHours()
+                val endTime = LocalTime.parse(taskObject.endTime, MainActivity.TIME_FORMAT)
+                taskHourRange = Duration.between(startDate.atTime(startTime), endDate.atTime(endTime)).toHours()
                 currentHourPeriod = Duration.between(startDate.atTime(startTime), LocalDateTime.now()).toHours()
             }
 

@@ -13,13 +13,16 @@ class D07OrderUIList {
 
     companion object {
 
+        // --- Global variables used throughout the active lifecycle of the application --- //
+        private var contextTopTaskList:  ArrayList<TaskObject> = ArrayList()
+
         // --- Sort UI Button List --- //
         fun sortContextList(contextList: ArrayList<ContextObject>) : ArrayList<ContextObject>{
             println("=== D07 - Sort Context List ===")
             //Sort the top task list based on same rules as tasks
-            val topTaskList = getContextTopmostTasks(contextList)
+            contextTopTaskList = getContextTopmostTasks(contextList)
             //println("Process: Sort topmost tasks in list for contexts") //Process line
-            val sortedTopTaskList = sortTaskList(topTaskList)
+            val sortedTopTaskList = sortTaskList(contextTopTaskList)
             if(sortedTopTaskList.isNotEmpty()){
                 val sortedContextList: ArrayList<ContextObject> = ArrayList()
                 for(topTask in sortedTopTaskList){
@@ -65,7 +68,7 @@ class D07OrderUIList {
                     return sortedList
                 }
                 else{
-                    //println("Process: Sorting Archived Task List") //Process Line
+                    println("Process: Sorting Archived Task List") //Process Line
                     return ArrayList(taskList.sortedWith(nullsLast(compareByDescending { LocalDate.parse(it.completedDate, MainActivity.DATE_FORMAT) })))
                 }
             }
@@ -74,22 +77,27 @@ class D07OrderUIList {
         }
 
         fun getContextTopmostTask(contextId: Int): TaskObject?{
-            //println("Process: Get ${D03ContextList.nameFromId(contextId)} topmost Task") //Process line
-            val taskContextList = D04TaskList.read("Context_Incomplete", contextId)
-            val sortedTaskList = sortTaskList(taskContextList)
-            if(sortedTaskList.isNotEmpty())
-                return sortedTaskList.first()
-
-            return null
+            //Match the context id with the topmost task
+            //println("Debug: getContextTopmostTask from context [${contextId}]: ${D03ContextList.nameFromId(contextId)}")
+            return try{
+                contextTopTaskList.first { it.contextId == contextId }
+            }catch(error: NoSuchElementException){
+                null
+            }
         }
 
         private fun getContextTopmostTasks(contextList: ArrayList<ContextObject>) : ArrayList<TaskObject>{
             //Get the topmost task in sorted order for the given context list
             val topTaskList: ArrayList<TaskObject> = ArrayList()
             for(context in contextList){
-                val topMostTask = getContextTopmostTask(context.id)
-                if(topMostTask != null)
-                    topTaskList.add(topMostTask)
+                //println("Process: Get ${D03ContextList.nameFromId(context.id)} topmost Task") //Process line
+                val taskContextList = D04TaskList.read("Context_Incomplete", context.id)
+                val sortedTaskList = sortTaskList(taskContextList)
+                if(sortedTaskList.isNotEmpty())
+                {
+                    //println("Result: ${D03ContextList.nameFromId(context.id)} topmost Task: ${sortedTaskList.first().name}") //Result line
+                    topTaskList.add(sortedTaskList.first())
+                }
             }
             return topTaskList
         }
@@ -111,12 +119,12 @@ class D07OrderUIList {
             //Order the pending tasks by start date value
             val conditionsActive = D02SettingsList.getTaskFeatureStatus("Conditions")
             val conditionalTasks: ArrayList<TaskObject> = ArrayList(taskList.filter {
-                conditionsActive && it.conditionStatus == true })
+                conditionsActive && it.conditionActiveFlag == true })
             val activeTasks: ArrayList<TaskObject> = ArrayList(taskList.filter {
                 LocalDate.parse(it.startDate, MainActivity.DATE_FORMAT) <= LocalDate.now() && (it.startTime.isEmpty() ||
                         Duration.between(LocalDate.parse(it.startDate, MainActivity.DATE_FORMAT)
                             .atTime(LocalTime.parse(it.startTime, MainActivity.TIME_FORMAT)), LocalDateTime.now()).toMinutes() > -1) &&
-                        (!conditionsActive || it.conditionStatus != true)})
+                        (!conditionsActive || it.conditionActiveFlag != true)})
 
             //Isolate the pending tasks based on either date or time
             val pendingTasks: ArrayList<TaskObject> = ArrayList(taskList.filter {
@@ -124,14 +132,20 @@ class D07OrderUIList {
                         (it.startTime.isNotEmpty() &&
                                 Duration.between(LocalDate.parse(it.startDate, MainActivity.DATE_FORMAT)
                                     .atTime(LocalTime.parse(it.startTime, MainActivity.TIME_FORMAT)), LocalDateTime.now()).toMinutes() < 0))
-                        && (!conditionsActive || it.conditionStatus != true) })
+                        && (!conditionsActive || it.conditionActiveFlag != true) })
+
+            //Debug Logs for checking task information
+            /*for(pendingTask in pendingTasks){
+                println("Debug: Pending task: ${pendingTask.getTaskModalAsString()}")
+                println("Debug: Task start time length: '${pendingTask.startTime.length}'")
+            }*/
 
             val sortedConditional = ArrayList(conditionalTasks.sortedWith(nullsLast(compareBy {
-                LocalDate.parse(it.checklistDate, MainActivity.DATE_FORMAT) })))
+                LocalDate.parse(it.earliestEndDate, MainActivity.DATE_FORMAT) })))
             val sortedPending = ArrayList(pendingTasks.sortedWith(nullsLast(compareBy (
                 { LocalDate.parse(it.startDate, MainActivity.DATE_FORMAT) },
                 { it.startTime.isEmpty()},
-                { LocalTime.parse(it.startTime, MainActivity.TIME_FORMAT) }
+                { LocalTime.parse(it.startTime, MainActivity.TIME_FORMAT)}
                 ))))
 
 
@@ -143,40 +157,44 @@ class D07OrderUIList {
         }
 
         private fun sortBySlope(taskList: ArrayList<TaskObject>, sortName:String, sortType: String) : ArrayList<TaskObject>{
-            //println("Process: Sorting Tasks by ${sortName}: $sortType") //Process line
             //Ensure features are active before sorting
             val complexityActive = D02SettingsList.getTaskFeatureStatus("Complexity")
             val motivationActive = D02SettingsList.getTaskFeatureStatus("Motivation")
+            if(sortName == "End Date" || (sortName == "Complexity" && complexityActive) || (sortName == "Motivation" && motivationActive)){
+                //println("Process: Sorting Tasks by ${sortName}: $sortType") //Process line
 
-            //Split the task array in terms of due time provided
-            var dueTimeTasks: ArrayList<TaskObject> = ArrayList(taskList.filter { (it.dueTime.isNotEmpty())})
-            var dueDateTasks: ArrayList<TaskObject> = ArrayList(taskList.filter { (it.dueTime.isEmpty())})
-            var sortedActive = taskList
-            when(sortName){
-                "Complexity" ->
-                    if (complexityActive && sortType == "Descending") {
-                        return ArrayList(taskList.sortedWith(nullsLast(compareByDescending { it.complexity })))
-                    } else if(complexityActive){
-                        return ArrayList(taskList.sortedWith(nullsLast(compareBy { it.complexity })))
-                    }
-                "Motivation" ->
-                    if (motivationActive && sortType == "Descending") {
-                        return ArrayList(taskList.sortedWith(nullsLast(compareByDescending { it.motivation })))
-                    } else if(motivationActive){
-                        return ArrayList(taskList.sortedWith(nullsLast(compareBy { it.motivation })))
-                    }
-                "Due Date" ->
-                    if (sortType == "Descending") {
-                        dueTimeTasks = ArrayList(dueTimeTasks.sortedWith(nullsLast(compareByDescending { LocalTime.parse(it.dueTime, MainActivity.TIME_FORMAT) })))
-                        sortedActive = (dueDateTasks + dueTimeTasks) as ArrayList<TaskObject>
-                        sortedActive =  ArrayList(sortedActive.sortedWith(nullsLast(compareByDescending { LocalDate.parse(it.checklistDate, MainActivity.DATE_FORMAT) })))
-                    } else{
-                        dueTimeTasks = ArrayList(dueTimeTasks.sortedWith(nullsLast(compareBy { LocalTime.parse(it.dueTime, MainActivity.TIME_FORMAT) })))
-                        sortedActive = (dueTimeTasks + dueDateTasks) as ArrayList<TaskObject>
-                        sortedActive =  ArrayList(sortedActive.sortedWith(nullsLast(compareBy ({ LocalDate.parse(it.checklistDate, MainActivity.DATE_FORMAT) }, {it.dueTime.isNotEmpty()}))))
-                    }
+                //Split the task array in terms of due time provided
+                var endTimeTasks: ArrayList<TaskObject> = ArrayList(taskList.filter { (it.endTime.isNotEmpty())})
+                val endDateTasks: ArrayList<TaskObject> = ArrayList(taskList.filter { (it.endTime.isEmpty())})
+                var sortedActive = taskList
+                when(sortName){
+                    "Complexity" ->
+                        return if (sortType == "Descending") {
+                            ArrayList(taskList.sortedWith(nullsLast(compareByDescending { it.complexity })))
+                        } else{
+                            ArrayList(taskList.sortedWith(nullsLast(compareBy { it.complexity })))
+                        }
+                    "Motivation" ->
+                        return if (sortType == "Descending") {
+                            ArrayList(taskList.sortedWith(nullsLast(compareByDescending { it.motivation })))
+                        } else {
+                            ArrayList(taskList.sortedWith(nullsLast(compareBy { it.motivation })))
+                        }
+                    "End Date" ->
+                        if (sortType == "Descending") {
+                            endTimeTasks = ArrayList(endTimeTasks.sortedWith(nullsLast(compareByDescending { LocalTime.parse(it.endTime, MainActivity.TIME_FORMAT) })))
+                            sortedActive = (endDateTasks + endTimeTasks) as ArrayList<TaskObject>
+                            sortedActive =  ArrayList(sortedActive.sortedWith(nullsLast(compareByDescending { LocalDate.parse(it.earliestEndDate, MainActivity.DATE_FORMAT) })))
+                        } else{
+                            endTimeTasks = ArrayList(endTimeTasks.sortedWith(nullsLast(compareBy { LocalTime.parse(it.endTime, MainActivity.TIME_FORMAT) })))
+                            sortedActive = (endTimeTasks + endDateTasks) as ArrayList<TaskObject>
+                            sortedActive =  ArrayList(sortedActive.sortedWith(nullsLast(compareBy ({ LocalDate.parse(it.earliestEndDate, MainActivity.DATE_FORMAT) }, {it.endTime.isNotEmpty()}))))
+                        }
+                }
+                return sortedActive
             }
-            return sortedActive
+
+            return taskList
         }
     }
 }

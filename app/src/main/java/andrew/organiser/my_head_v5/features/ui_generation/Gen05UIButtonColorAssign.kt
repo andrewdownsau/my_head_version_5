@@ -52,12 +52,12 @@ class Gen05UIButtonColorAssign {
                             dynamicButton.paintFlags = dynamicButton.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
 
                         // --- Check 2: Is the task conditional of others tasks ---
-                        if(D02SettingsList.getTaskFeatureStatus("Conditions") && taskObject.conditionStatus == true)
+                        if(D02SettingsList.getTaskFeatureStatus("Conditions") && taskObject.conditionActiveFlag == true)
                             buttonColor = D02SettingsList.getUIColor("conditional")
                         else{
                             // --- Check 3: Is the task pending in time (not started yet) ---
                             val startDate = LocalDate.parse(taskObject.startDate, MainActivity.DATE_FORMAT)
-                            val taskTimeSet = taskObject.startTime.isNotEmpty() && taskObject.dueTime.isNotEmpty()
+                            val taskTimeSet = taskObject.startTime.isNotEmpty() && taskObject.endTime.isNotEmpty()
                             var currentTaskPeriod = Duration.between(startDate.atStartOfDay(), LocalDate.now().atStartOfDay()).toMinutes()
                             var timeFromMidnight = 0
                             if(taskTimeSet){
@@ -78,9 +78,9 @@ class Gen05UIButtonColorAssign {
                                         dynamicButton.paintFlags += Paint.UNDERLINE_TEXT_FLAG
 
                                     // --- Check 5: Is the task urgent, if so, how urgent, in days? ---
-                                    val dueDate = LocalDate.parse(taskObject.checklistDate, MainActivity.DATE_FORMAT)
-                                    if(dueDate != null) {
-                                        val daysTillDue = Duration.between(LocalDate.now().atStartOfDay(), dueDate.atStartOfDay()).toDays()
+                                    val endDate = LocalDate.parse(taskObject.earliestEndDate, MainActivity.DATE_FORMAT)
+                                    if(endDate != null) {
+                                        val daysTillDue = Duration.between(LocalDate.now().atStartOfDay(), endDate.atStartOfDay()).toDays()
                                         buttonColor = when (daysTillDue) {
                                             // --- Check 5.1: Is the task due past 7 days ---
                                             in 8..Int.MAX_VALUE -> D02SettingsList.getUIColor("weekPlus")
@@ -96,9 +96,9 @@ class Gen05UIButtonColorAssign {
                                             else -> D02SettingsList.getUIColor("overdue")
                                         }
                                         // --- Check 6: If the task has times, does this reflect the urgent status ---
-                                        if((!taskObject.checklist || taskObject.dueDate == taskObject.checklistDate) && taskTimeSet && daysTillDue < 2){
-                                            val dueTime = LocalTime.parse(taskObject.dueTime, MainActivity.TIME_FORMAT)
-                                            val currentTimeLeft = Duration.between(LocalDateTime.now(), dueDate.atTime(dueTime)).toHours()
+                                        if((!taskObject.checklistFlag || taskObject.endDate == taskObject.earliestEndDate) && taskTimeSet && daysTillDue < 2){
+                                            val endTime = LocalTime.parse(taskObject.endTime, MainActivity.TIME_FORMAT)
+                                            val currentTimeLeft = Duration.between(LocalDateTime.now(), endDate.atTime(endTime)).toHours()
                                             buttonColor = when (currentTimeLeft) {
                                                 // --- Check 6.1: Is the task due in the next 24 to 48 hours---
                                                 in 24..48 -> D02SettingsList.getUIColor("tomorrow")

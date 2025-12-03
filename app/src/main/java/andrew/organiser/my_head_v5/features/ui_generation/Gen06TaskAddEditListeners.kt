@@ -46,6 +46,7 @@ class Gen06TaskAddEditListeners {
                 "setChecklistFlag" -> setChecklistFlagListener(c, f!!, viewList[0] as CheckBox, viewList[1] as ConstraintLayout, viewList[2] as NestedScrollView, taskObjectId)
                 "setRepeatFlag" -> setRepeatFlagListener(viewList)
                 "setRepeatType" -> setRepeatTypeListener(viewList)
+                "setConditionListener" -> setConditionSpinnerListener(viewList[0] as Spinner, viewList[1] as ConstraintLayout)
             }
         }
 
@@ -69,51 +70,69 @@ class Gen06TaskAddEditListeners {
 
         private fun setDateListeners(activity: FragmentActivity?, editTextList: ArrayList<View>){
             for(editText in editTextList.withIndex()){
-                editText.value.setOnClickListener {
+                if(editText.index > 1){
+                    editText.value.setOnClickListener {
 
-                    val calendar: Calendar = Calendar.getInstance(TimeZone.getDefault())
+                        val calendar: Calendar = Calendar.getInstance(TimeZone.getDefault())
 
-                    val dialog = DatePickerDialog(activity!!,
-                        { _, selectedYear, selectedMonth, selectedDay ->
-                            //Set the text to include 2 digits for month and day
-                            val actualMonth = selectedMonth + 1
-                            val dayText = if(selectedDay < 10) "0$selectedDay" else selectedDay.toString()
-                            val monthText = if(actualMonth < 10) "0$actualMonth" else actualMonth.toString()
-                            val newDisplayedDate = "$dayText/$monthText/${selectedYear-2000}"
-                            (editText.value as EditText).setText(newDisplayedDate)
+                        val dialog = DatePickerDialog(activity!!,
+                            { _, selectedYear, selectedMonth, selectedDay ->
+                                //Set the text to include 2 digits for month and day
+                                val actualMonth = selectedMonth + 1
+                                val dayText = if(selectedDay < 10) "0$selectedDay" else selectedDay.toString()
+                                val monthText = if(actualMonth < 10) "0$actualMonth" else actualMonth.toString()
+                                val newDisplayedDate = "$dayText/$monthText/${selectedYear-2000}"
+                                (editText.value as EditText).setText(newDisplayedDate)
 
-                            //Check start date if end date and do not accept any date before start
-                            if(editTextList.size > 1){
-                                val startDateEdit = editTextList[0] as EditText; val dueDateEdit = editTextList[1] as EditText
-                                val dateTextColor = if(D04TaskList.validateDate(startDateEdit, dueDateEdit)) "#8694B1" else "#ff0000"
-                                startDateEdit.setTextColor(Color.parseColor(dateTextColor))
-                                dueDateEdit.setTextColor(Color.parseColor(dateTextColor))
-                            }
-                        },
-                        calendar[Calendar.YEAR], calendar[Calendar.MONTH],
-                        calendar[Calendar.DAY_OF_MONTH]
-                    )
-                    dialog.show()
+                                //Check start date if end date and do not accept any date before start
+                                warningRedStateToDateTime(editTextList, true)
+                            },
+                            calendar[Calendar.YEAR], calendar[Calendar.MONTH],
+                            calendar[Calendar.DAY_OF_MONTH]
+                        )
+                        dialog.show()
+                    }
                 }
             }
         }
 
         private fun setTimeListeners(activity: FragmentActivity?, editTextList: ArrayList<View>){
             for(editText in editTextList.withIndex()){
-                editText.value.setOnClickListener {
+                if(editText.index == 0 || editText.index == 1){
+                    editText.value.setOnClickListener {
 
-                    val time = LocalTime.now()
+                        val time = LocalTime.now()
 
-                    val timeSetListener = TimePickerDialog.OnTimeSetListener { _, hour, minute ->
-                        val displayHour = if(hour == 0) "12" else if(hour < 13) "$hour" else "${hour - 12}"
-                        val displayMinute = if(minute < 10) "0$minute" else "$minute"
-                        val displayAMPM = if(hour < 12) "AM" else "PM"
-                        val newDisplayedTime = "$displayHour:$displayMinute $displayAMPM"
-                        (editText.value as EditText).setText(newDisplayedTime)
+                        val timeSetListener = TimePickerDialog.OnTimeSetListener { _, hour, minute ->
+                            val displayHour = if(hour == 0) "12" else if(hour < 13) "$hour" else "${hour - 12}"
+                            val displayMinute = if(minute < 10) "0$minute" else "$minute"
+                            val displayAMPM = if(hour < 12) "AM" else "PM"
+                            val newDisplayedTime = "$displayHour:$displayMinute $displayAMPM"
+                            (editText.value as EditText).setText(newDisplayedTime)
+
+                            //Check start and end time if dates are equal
+                            warningRedStateToDateTime(editTextList, false)
+                        }
+
+                        TimePickerDialog(activity, timeSetListener, time.hour, time.minute, false).show()
+
                     }
+                }
+            }
+        }
 
-                    TimePickerDialog(activity, timeSetListener, time.hour, time.minute, false).show()
+        private fun warningRedStateToDateTime(editTextList: ArrayList<View>, validateDate: Boolean){
+            if(editTextList.size > 3){
+                val startTimeEdit = editTextList[0] as EditText; val endTimeEdit = editTextList[1] as EditText
+                val startDateEdit = editTextList[2] as EditText; val endDateEdit = editTextList[3] as EditText
+                val timeTextColor = if(D04TaskList.validateTime(startTimeEdit, endTimeEdit, startDateEdit, endDateEdit)) "#8694B1" else "#ff0000"
+                startTimeEdit.setTextColor(Color.parseColor(timeTextColor))
+                endTimeEdit.setTextColor(Color.parseColor(timeTextColor))
 
+                if(validateDate){
+                    val dateTextColor = if(D04TaskList.validateDate(startDateEdit, endDateEdit)) "#8694B1" else "#ff0000"
+                    startDateEdit.setTextColor(Color.parseColor(dateTextColor))
+                    endDateEdit.setTextColor(Color.parseColor(dateTextColor))
                 }
             }
         }
@@ -208,6 +227,17 @@ class Gen06TaskAddEditListeners {
             }
             radioOther.setOnCheckedChangeListener { _, isChecked ->
                 repeatOtherLayout.visibility = if(isChecked) View.VISIBLE else View.GONE
+            }
+        }
+
+        private fun setConditionSpinnerListener(conditionSpinner: Spinner, changeStartLayout: ConstraintLayout){
+            conditionSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                    //If condition has been changed to not be None, then change visibility of change start layout
+                    val newConditionName = conditionSpinner.selectedItem.toString()
+                    changeStartLayout.visibility = if(newConditionName != "None") View.VISIBLE else View.GONE
+                }
+                override fun onNothingSelected(parent: AdapterView<*>?) {}
             }
         }
     }

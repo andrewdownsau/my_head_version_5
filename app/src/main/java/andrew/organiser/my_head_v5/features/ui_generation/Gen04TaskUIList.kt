@@ -64,7 +64,7 @@ class Gen04TaskUIList {
                     task.completedFlag = false
                     task.completedDate = ""
                 }
-                D04TaskList.updateConditionStatuses(c, task.id, task.completedFlag, !task.repeat)
+                D04TaskList.updateConditionStatuses(c, task.id, task.completedFlag, !task.repeatFlag)
 
                 //Update task list and reset UI generation
                 if(D04TaskList.save(c, task, task.name)){
@@ -75,6 +75,7 @@ class Gen04TaskUIList {
 
             //Set onclick listener to send to task edit page
             dynamicButton.setOnClickListener {
+                f.onSaveInstanceState(bundleOf("taskListTypeActive" to filterKey.contains("_Active")))
                 val taskBundle = bundleOf("taskObjectId" to task.id)
                 findNavController(f).navigate(R.id.action_TaskList_to_TaskAddEdit, taskBundle)
             }

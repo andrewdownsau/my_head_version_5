@@ -66,7 +66,7 @@ class Gen09SubTaskUIList {
             //If subtask is not null, set values using subtask modal
             if(subtaskObject != null){
                 checkItemName.setText(subtaskObject.name)
-                checkItemDate.setText(subtaskObject.dueDate)
+                checkItemDate.setText(subtaskObject.endDate)
                 completedCheckbox.isChecked = subtaskObject.completedFlag
 
                 //Set parameters for remove button
@@ -111,7 +111,7 @@ class Gen09SubTaskUIList {
             checkItemDate.id = View.generateViewId()
             val params = ConstraintLayout.LayoutParams(260, ConstraintLayout.LayoutParams.WRAP_CONTENT)
             checkItemDate.layoutParams = params
-            checkItemDate.hint = "Due date"
+            checkItemDate.hint = "End date"
             checkItemDate.setTextColor(c.getColor(R.color.sub_content))
             checkItemDate.focusable = View.NOT_FOCUSABLE
             checkItemDate.tag = nameEditTextId
@@ -245,11 +245,11 @@ class Gen09SubTaskUIList {
             }
         }
 
-        fun getEarliestChecklistDate(layout: ConstraintLayout, dueDateEdit: EditText) : String{
+        fun getEarliestChecklistDate(layout: ConstraintLayout, endDateEdit: EditText) : String{
             var subtaskDate = LocalDate.now()
             var subtaskDateValid = false
             var subtaskChecked = false
-            var earliestSubtaskDate = LocalDate.parse(dueDateEdit.text.toString(),
+            var earliestSubtaskDate = LocalDate.parse(endDateEdit.text.toString(),
                 MainActivity.DATE_FORMAT
             )
             subtaskWidgetIdList.forEach { widgetIdArray ->
